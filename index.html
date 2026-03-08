@@ -4,28 +4,30 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="theme-color" content="#0a0f1e"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TuitionPro">
 <title>TuitionPro</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#0a0f1e; --bg2:#0e1628; --surf:#131d35; --surf2:#1a2540; --surf3:#202e4a;
-  --bdr:#253050; --bdr2:#2e3a5c;
-  --acc:#4f9eff; --acc2:#3b82f6;
-  --grn:#22d48a; --red:#ff5e7a; --ylw:#ffb830; --pur:#a78bfa;
+  --bg:#0a0f1e;--bg2:#0e1628;--surf:#131d35;--surf2:#1a2540;--surf3:#202e4a;
+  --bdr:#253050;--bdr2:#2e3a5c;
+  --acc:#4f9eff;--acc2:#3b82f6;
+  --grn:#22d48a;--red:#ff5e7a;--ylw:#ffb830;--pur:#a78bfa;
   --wa:#25D366;
-  --txt:#eef2ff; --txt2:#8899bb; --txt3:#4a5878;
-  --r:14px; --font:'Plus Jakarta Sans',sans-serif; --mono:'Fira Code',monospace;
-  --nav:64px; --hdr:56px; --shadow:0 8px 32px #00000055;
+  --txt:#eef2ff;--txt2:#8899bb;--txt3:#4a5878;
+  --r:14px;--font:'Plus Jakarta Sans',sans-serif;--mono:'Fira Code',monospace;
+  --nav:64px;--hdr:56px;--shadow:0 8px 32px #00000055;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html{height:100%;background:var(--bg);}
-body{font-family:var(--font);background:var(--bg);color:var(--txt);position:fixed;inset:0;overflow:hidden;}
+html,body{height:100%;background:var(--bg);}
+body{font-family:var(--font);color:var(--txt);position:fixed;inset:0;overflow:hidden;}
 body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;z-index:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 #app{display:flex;flex-direction:column;width:100%;height:100%;max-width:520px;margin:0 auto;position:relative;z-index:1;}
 
 /* HDR */
-.hdr{flex-shrink:0;height:var(--hdr);display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:linear-gradient(180deg,var(--bg),var(--bg2));border-bottom:1px solid var(--bdr);position:relative;}
+.hdr{flex-shrink:0;height:var(--hdr);display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:linear-gradient(180deg,var(--bg),var(--bg2));border-bottom:1px solid var(--bdr);position:relative;z-index:10;}
 .hdr::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc)55,transparent);}
 .logo{display:flex;align-items:center;gap:9px;}
 .logo-ic{width:32px;height:32px;background:linear-gradient(135deg,var(--acc),var(--pur));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
@@ -40,7 +42,7 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
 
 /* NAV */
-.bnav{flex-shrink:0;height:var(--nav);display:flex;background:var(--surf);border-top:1px solid var(--bdr);position:relative;}
+.bnav{flex-shrink:0;height:var(--nav);display:flex;background:var(--surf);border-top:1px solid var(--bdr);position:relative;z-index:10;}
 .bnav::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc)33,transparent);}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--txt3);font-size:10px;font-family:var(--font);cursor:pointer;transition:color .2s;position:relative;font-weight:600;}
 .nb.on{color:var(--acc);}
@@ -51,11 +53,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .pg{display:none;padding-bottom:24px;}
 .pg.on{display:block;animation:fadeUp .22s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* FAB — outside #app so fixed positioning works on all browsers */
-#fab{position:fixed;bottom:80px;right:20px;width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#fff;font-size:30px;font-weight:300;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:9999;box-shadow:0 6px 24px var(--acc)66;}
-#fab.on{display:flex;}
-#fab:active{transform:scale(.92);}
 
 /* ── DASHBOARD / HERO ── */
 .hero{margin:16px;padding:20px;border-radius:18px;background:linear-gradient(135deg,#0f2a5e,#1a3a7a);border:1px solid #2050a0;position:relative;overflow:hidden;}
@@ -95,14 +92,18 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .s-ttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--txt3);}
 .s-act{font-size:12px;color:var(--acc);cursor:pointer;font-weight:700;}
 
-/* ── STUDENT TABLE / CARDS (DASHBOARD) ── */
+/* STUDENT CARDS */
 .dash-table{padding:0 16px;}
 .dt-row{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:13px;margin-bottom:10px;position:relative;overflow:hidden;}
 .dt-row.paid-row{border-left:3px solid var(--grn);}
 .dt-row.unpaid-row{border-left:3px solid var(--red);}
 .dt-row.partial-row{border-left:3px solid var(--ylw);}
 .dt-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px;}
-.dt-name{font-size:15px;font-weight:700;cursor:pointer;flex:1;}
+.dt-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+/* STUDENT AVATAR */
+.stu-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--bdr2);background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;}
+.stu-avatar img{width:100%;height:100%;object-fit:cover;}
+.dt-name{font-size:15px;font-weight:700;cursor:pointer;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .dt-name:hover{color:var(--acc);}
 .dt-fee{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--acc);flex-shrink:0;}
 .dt-mid{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px;}
@@ -119,12 +120,11 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .dt-btn.pay-btn{border-color:var(--grn)44;color:var(--grn);background:#22d48a0e;}
 .dt-btn.paid-btn{border-color:var(--grn)33;color:var(--grn)66;cursor:default;}
 .dt-btn.wa-btn{border-color:var(--wa)44;color:var(--wa);background:#25D36610;}
-.dt-btn.partial-btn{border-color:var(--ylw)44;color:var(--ylw);background:#ffb83010;}
 .dt-btn.detail-btn{border-color:var(--acc)33;color:var(--acc);}
 .due-line{font-size:11px;color:var(--red);margin-top:5px;font-family:var(--mono);font-weight:600;}
 .partial-line{font-size:11px;color:var(--ylw);margin-top:5px;font-family:var(--mono);font-weight:600;}
 
-/* ── STUDENT LIST PAGE ── */
+/* STUDENT LIST PAGE */
 .srch-wrap{padding:12px 16px;position:sticky;top:0;background:var(--bg);z-index:5;border-bottom:1px solid var(--bdr);}
 .srch-rel{position:relative;}
 .srch-ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--txt3);}
@@ -132,15 +132,18 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .srch-in:focus{border-color:var(--acc);}
 .srch-in::placeholder{color:var(--txt3);}
 .chips{display:flex;gap:7px;padding:10px 16px 12px;overflow-x:auto;scrollbar-width:none;}
-.chip{flex-shrink:0;background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--txt2);cursor:pointer;font-weight:600;}
-.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:800;}
+.chip-f{flex-shrink:0;background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--txt2);cursor:pointer;font-weight:600;}
+.chip-f.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:800;}
 .empty{text-align:center;padding:50px 20px;color:var(--txt3);}
 .empty-ic{font-size:44px;margin-bottom:10px;opacity:.5;}
 
-/* ── DETAIL PAGE ── */
+/* DETAIL PAGE */
 .det-hero{padding:18px 16px;background:linear-gradient(180deg,var(--surf),var(--bg2));border-bottom:1px solid var(--bdr);}
 .back-btn{display:flex;align-items:center;gap:5px;color:var(--acc);font-size:13px;cursor:pointer;background:none;border:none;font-family:var(--font);margin-bottom:12px;padding:0;font-weight:700;}
-.det-name{font-size:22px;font-weight:800;margin-bottom:4px;}
+.det-top{display:flex;align-items:center;gap:14px;margin-bottom:8px;}
+.det-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--bdr2);background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;flex-shrink:0;}
+.det-avatar img{width:100%;height:100%;object-fit:cover;}
+.det-name{font-size:22px;font-weight:800;}
 .det-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
 .dtags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
 .dtag{font-size:11px;background:var(--surf2);border:1px solid var(--bdr2);border-radius:7px;padding:3px 9px;color:var(--txt2);font-weight:600;}
@@ -152,7 +155,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .dbl{font-size:13px;color:var(--txt2);font-weight:500;}
 .dbv{font-size:14px;font-weight:700;font-family:var(--mono);}
 .dbv.g{color:var(--grn);}.dbv.r{color:var(--red);}.dbv.y{color:var(--ylw);}
-
 .total-due-box{margin:0 16px 14px;background:linear-gradient(135deg,#3a1a00,#2a1200);border:1px solid var(--ylw)44;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;}
 .tdb-l{font-size:12px;color:var(--ylw);font-weight:700;}
 .tdb-v{font-size:22px;font-weight:800;font-family:var(--mono);color:var(--ylw);}
@@ -202,7 +204,7 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .pa-l.pt{color:var(--ylw);}
 .pdel{background:none;border:none;color:var(--txt3);font-size:17px;cursor:pointer;padding:4px 6px;}
 
-/* ── FORM ── */
+/* FORM */
 .fw{padding:16px;}
 .fttl{font-size:18px;font-weight:800;margin-bottom:3px;}
 .fsub-txt{font-size:12px;color:var(--txt3);margin-bottom:20px;}
@@ -215,6 +217,21 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .fs option{background:#131d35;}
 .fta{resize:none;min-height:70px;}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* INPUT WITH BUTTON INLINE */
+.fi-row{display:flex;gap:8px;align-items:flex-start;}
+.fi-row .fi{flex:1;}
+.fi-side-btn{flex-shrink:0;padding:12px 13px;background:var(--surf2);border:1px solid var(--bdr);border-radius:11px;color:var(--acc);font-size:13px;cursor:pointer;font-family:var(--font);font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.fi-side-btn:active{opacity:.8;}
+
+/* IMAGE UPLOAD */
+.img-upload-wrap{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.img-preview{width:64px;height:64px;border-radius:50%;background:var(--surf2);border:2px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0;cursor:pointer;}
+.img-preview img{width:100%;height:100%;object-fit:cover;}
+.img-btns{display:flex;flex-direction:column;gap:7px;}
+.img-btn{padding:8px 14px;border-radius:9px;border:1px solid var(--bdr);background:var(--surf2);color:var(--txt2);font-size:12px;font-family:var(--font);cursor:pointer;font-weight:700;}
+.img-btn.pri{border-color:var(--acc)44;color:var(--acc);}
+
+/* DUE SECTION */
 .due-sec{background:var(--surf2);border:1px solid var(--ylw)33;border-radius:13px;padding:14px;margin-bottom:14px;}
 .due-sec-ttl{font-size:12px;font-weight:800;color:var(--ylw);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 .tog-row{display:flex;gap:8px;margin-bottom:12px;}
@@ -227,17 +244,17 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .fsave:active{opacity:.85;}
 .fcancel{width:100%;padding:12px;background:none;border:1px solid var(--bdr);border-radius:12px;color:var(--txt2);font-size:14px;font-family:var(--font);cursor:pointer;margin-top:10px;font-weight:700;}
 
-/* ── MODAL ── */
-.ov{position:absolute;inset:0;background:#00000099;z-index:50;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+/* MODAL — FIXED to viewport, not relative to #app */
+.ov{position:fixed;inset:0;background:#00000099;z-index:9000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
 .ov.on{display:flex;}
-.modal{background:var(--surf);border-radius:22px 22px 0 0;padding:8px 18px 36px;width:100%;border:1px solid var(--bdr);border-bottom:none;max-height:92%;overflow-y:auto;}
+.modal{background:var(--surf);border-radius:22px 22px 0 0;padding:8px 18px 36px;width:100%;max-width:520px;border:1px solid var(--bdr);border-bottom:none;max-height:92%;overflow-y:auto;}
 .modal-drag{width:36px;height:3px;background:var(--bdr2);border-radius:2px;margin:12px auto 16px;}
 .modal-ttl{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
 .mcls{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt2);font-size:13px;cursor:pointer;padding:5px 11px;font-family:var(--font);font-weight:700;}
 .partial-hint{background:var(--ylw)12;border:1px solid var(--ylw)44;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--ylw);display:none;}
 .partial-hint.on{display:block;}
 
-/* ── REPORTS ── */
+/* REPORTS */
 .rep-tabs{display:flex;gap:7px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none;}
 .rtab{flex-shrink:0;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:var(--surf);border:1px solid var(--bdr);color:var(--txt2);}
 .rtab.on{background:var(--acc)22;border-color:var(--acc);color:var(--acc);}
@@ -250,16 +267,20 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .rv{font-size:13px;font-family:var(--mono);font-weight:700;}
 .rv.g{color:var(--grn);}.rv.r{color:var(--red);}.rv.y{color:var(--ylw);}
 
-/* ── ALERTS ── */
-.al-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;margin:14px 16px 0;cursor:pointer;}
-.al-card:active{opacity:.8;}
-
-/* TOAST — also outside #app */
+/* TOAST — fixed to viewport */
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--surf3);border:1px solid var(--bdr2);border-radius:11px;padding:10px 20px;font-size:13px;font-weight:700;color:var(--txt);opacity:0;transition:all .25s;z-index:9999;white-space:nowrap;pointer-events:none;box-shadow:var(--shadow);}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{border-color:var(--grn)55;color:var(--grn);}
 #toast.er{border-color:var(--red)55;color:var(--red);}
 #toast.wa{border-color:var(--wa)55;color:var(--wa);}
+
+/* FAB — fixed to viewport */
+#fab{position:fixed;bottom:80px;right:max(20px,calc(50vw - 240px));width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#fff;font-size:30px;font-weight:300;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:500;box-shadow:0 6px 24px var(--acc)66;}
+#fab.on{display:flex;}
+#fab:active{transform:scale(.92);}
+
+/* CONTACT PICKER NOTE */
+.contact-note{font-size:10px;color:var(--txt3);margin-top:4px;font-weight:600;}
 
 ::-webkit-scrollbar{display:none;}
 </style>
@@ -275,14 +296,11 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
   </div>
   <div class="hdr-r">
     <div class="hdr-badge" id="hdrM"></div>
-    <div class="hdr-bell" onclick="goPage('alerts',document.getElementById('nb-al'))">
-      🔔<div class="bell-dot" id="bellDot"></div>
-    </div>
+    <div class="hdr-bell" onclick="nav('alerts')">🔔<div class="bell-dot" id="bellDot"></div></div>
   </div>
-
 </div>
 
-<!-- SCROLL -->
+<!-- SCROLL AREA -->
 <div class="scroll" id="scrollEl">
 
   <!-- ══ DASHBOARD ══ -->
@@ -304,7 +322,10 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
       <div class="stt y"><div class="stt-l">Total Outstanding</div><div class="stt-v y" id="dod">₹0</div><div class="stt-s">all dues</div></div>
       <div class="stt p"><div class="stt-l">Partial Pays</div><div class="stt-v p" id="dpt">0</div><div class="stt-s">this month</div></div>
     </div>
-    <div class="s-hdr"><div class="s-ttl">All Students This Month</div><div class="s-act" onclick="goPage('stu',document.getElementById('nb-stu'))">View All →</div></div>
+    <div class="s-hdr">
+      <div class="s-ttl">All Students This Month</div>
+      <div class="s-act" onclick="nav('stu')">View All →</div>
+    </div>
     <div class="dash-table" id="dashTable"></div>
   </div>
 
@@ -313,15 +334,15 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
     <div class="srch-wrap">
       <div class="srch-rel">
         <span class="srch-ic">🔍</span>
-        <input class="srch-in" id="srchIn" placeholder="Search name, parent, class…" oninput="filterStu()"/>
+        <input class="srch-in" id="srchIn" placeholder="Search name, parent, class…" oninput="renderStu()"/>
       </div>
     </div>
     <div class="chips">
-      <div class="chip on" onclick="setChip('all',this)">All</div>
-      <div class="chip" onclick="setChip('unpaid',this)">Unpaid</div>
-      <div class="chip" onclick="setChip('paid',this)">Paid</div>
-      <div class="chip" onclick="setChip('partial',this)">Partial</div>
-      <div class="chip" onclick="setChip('overdue',this)">Overdue</div>
+      <div class="chip-f on" onclick="setChip('all',this)">All</div>
+      <div class="chip-f" onclick="setChip('unpaid',this)">Unpaid</div>
+      <div class="chip-f" onclick="setChip('paid',this)">Paid</div>
+      <div class="chip-f" onclick="setChip('partial',this)">Partial</div>
+      <div class="chip-f" onclick="setChip('overdue',this)">Overdue</div>
     </div>
     <div id="stuList"></div>
     <div class="empty" id="stuEmpty" style="display:none"><div class="empty-ic">👨‍🎓</div>No students found</div>
@@ -336,9 +357,29 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
       <div class="fttl" id="fTtl">Add Student</div>
       <div class="fsub-txt" id="fSub">Fill in the student details</div>
 
+      <!-- PHOTO UPLOAD -->
+      <div class="img-upload-wrap">
+        <div class="img-preview" id="imgPreview" onclick="document.getElementById('imgFile').click()">📷</div>
+        <div class="img-btns">
+          <button class="img-btn pri" onclick="document.getElementById('imgFile').click()">📷 Upload Photo</button>
+          <button class="img-btn" onclick="clearImg()">✕ Remove Photo</button>
+        </div>
+        <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="handleImg(this)"/>
+      </div>
+
       <div class="fg"><label class="fl">Student Name *</label><input class="fi" id="fn" placeholder="e.g. Arjun Kumar"/></div>
       <div class="fg"><label class="fl">Parent / Guardian Name *</label><input class="fi" id="fpn" placeholder="e.g. Ramesh Kumar"/></div>
-      <div class="fg"><label class="fl">Mobile Number *</label><input class="fi" id="fmob" type="tel" placeholder="9876543210" inputmode="numeric"/></div>
+
+      <!-- MOBILE WITH CONTACT PICKER -->
+      <div class="fg">
+        <label class="fl">Mobile Number *</label>
+        <div class="fi-row">
+          <input class="fi" id="fmob" type="tel" placeholder="9876543210" inputmode="numeric"/>
+          <button class="fi-side-btn" id="contactBtn" onclick="pickContact()" title="Pick from contacts">📋 Contacts</button>
+        </div>
+        <div class="contact-note" id="contactNote">📱 Tap "Contacts" to pick from your phone's contacts</div>
+      </div>
+
       <div class="frow">
         <div class="fg"><label class="fl">Class / Batch</label><input class="fi" id="fcls" placeholder="e.g. 10th A"/></div>
         <div class="fg"><label class="fl">Subject</label><input class="fi" id="fsub_" placeholder="e.g. Maths"/></div>
@@ -347,7 +388,7 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
       <div class="fg"><label class="fl">Joining Date</label><input class="fi" id="fjd" type="date"/></div>
       <div class="fg"><label class="fl">Notes</label><textarea class="fta" id="fnotes" placeholder="Any extra notes…"></textarea></div>
 
-      <!-- PREVIOUS DUES -->
+      <!-- PREVIOUS DUES (only for add) -->
       <div class="due-sec" id="dueSec">
         <div class="due-sec-ttl">⚠️ Previous Outstanding Dues</div>
         <div class="tog-row">
@@ -387,19 +428,22 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 
 </div><!-- /scroll -->
 
-<!-- NAV -->
+<!-- BOTTOM NAV -->
 <div class="bnav">
-  <button class="nb on" id="nb-dash" onclick="goPage('dash',this)"><span class="ni">🏠</span>Home</button>
-  <button class="nb" id="nb-stu" onclick="goPage('stu',this)"><span class="ni">👥</span>Students</button>
-  <button class="nb" id="nb-rep" onclick="goPage('rep',this)"><span class="ni">📊</span>Reports</button>
-  <button class="nb" id="nb-al" onclick="goPage('alerts',this)"><span class="ni">🔔</span>Alerts</button>
+  <button class="nb on" id="nb-dash" onclick="nav('dash')"><span class="ni">🏠</span>Home</button>
+  <button class="nb" id="nb-stu"  onclick="nav('stu')"><span class="ni">👥</span>Students</button>
+  <button class="nb" id="nb-rep"  onclick="nav('rep')"><span class="ni">📊</span>Reports</button>
+  <button class="nb" id="nb-alerts" onclick="nav('alerts')"><span class="ni">🔔</span>Alerts</button>
 </div>
-<!-- PAYMENT MODAL -->
+
+</div><!-- /app -->
+
+<!-- PAYMENT MODAL — outside #app so fixed positioning is viewport-relative -->
 <div class="ov" id="payOv">
   <div class="modal">
     <div class="modal-drag"></div>
     <div class="modal-ttl">Record Payment <button class="mcls" onclick="closeOv('payOv')">✕ close</button></div>
-    <div class="partial-hint" id="partHint">⚡ Partial payment — balance ₹<span id="partBal">0</span> remaining</div>
+    <div class="partial-hint" id="partHint">⚡ Partial — balance ₹<span id="partBal">0</span> remaining</div>
     <div class="fg"><label class="fl">Month</label>
       <select class="fs" id="pm">
         <option value="1">January</option><option value="2">February</option><option value="3">March</option>
@@ -420,21 +464,28 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
   </div>
 </div>
 
-<div id="toast"></div>
-</div><!-- /app -->
+<!-- DELETE CONFIRM MODAL -->
+<div class="ov" id="delOv">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-ttl">🗑️ Confirm Delete</div>
+    <div style="font-size:14px;color:var(--txt2);margin-bottom:20px;line-height:1.6" id="delMsg"></div>
+    <button class="fsave" style="background:linear-gradient(135deg,var(--red),#c0392b)" id="delConfirmBtn">Yes, Delete</button>
+    <button class="fcancel" onclick="closeOv('delOv')">Cancel</button>
+  </div>
+</div>
 
-<!-- FAB and toast OUTSIDE #app so position:fixed works correctly -->
+<!-- FAB — outside #app, fixed to viewport -->
 <button id="fab" onclick="openAdd()">+</button>
+<div id="toast"></div>
 
 <script>
 // ══════════════════════════════════════════════════
-// DB  — localStorage as "tables"
+// DATABASE  (localStorage)
 // ══════════════════════════════════════════════════
 const DB={
-  // students table: {id, student_name, parent_name, mobile_number, class_batch, subject, monthly_fee, joining_date, notes, prev_due, active}
   gs(){return JSON.parse(localStorage.getItem('tp_students')||'[]');},
   ss(d){localStorage.setItem('tp_students',JSON.stringify(d));},
-  // payments table: {id, student_id, month, year, status(Paid/Unpaid/Partial), payment_date, amount, mode, note, is_prev_due}
   gp(){return JSON.parse(localStorage.getItem('tp_payments')||'[]');},
   sp(d){localStorage.setItem('tp_payments',JSON.stringify(d));},
   nid(a){return a.length?Math.max(...a.map(x=>x.id))+1:1;}
@@ -443,41 +494,58 @@ const DB={
 // ══════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════
-let curPg='dash', prevPg='dash', editId=null, detId=null, payId=null;
-let chip='all', repTab='month', dueType='amt', pickedMos=[];
 const now=new Date(), curM=now.getMonth()+1, curY=now.getFullYear();
 const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let curPg='dash', prevPg='dash', editId=null, detId=null, payId=null;
+let chipFilter='all', repTab='month', dueType='amt', pickedMos=[];
+let pendingImgData=null; // base64 for current form
 
 // ══════════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════════
 function N(n){return Number(n||0).toLocaleString('en-IN');}
-function today(){return now.toLocaleDateString('en-IN');}
+function todayStr(){return now.toLocaleDateString('en-IN');}
+
 function toast(m,t=''){
   const el=document.getElementById('toast');
   el.textContent=m; el.className='on'+(t?' '+t:'');
   clearTimeout(el._t); el._t=setTimeout(()=>el.className='',2800);
 }
 
-// Calculate total outstanding due for a student
+// FIX #4: Safe WhatsApp — lookup by ID, never pass object inline
+function sendWA(sid){
+  const s=DB.gs().find(x=>x.id===sid); if(!s) return;
+  const msg=`Hello ${s.parent_name}, your child ${s.student_name}'s tuition fee of \u20B9${N(s.monthly_fee)} for ${MO[curM-1]} ${curY} is pending. Kindly pay at the earliest. Thank you.`;
+  let num=String(s.mobile_number).replace(/\D/g,'');
+  if(!num.startsWith('91')) num='91'+num;
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+  toast('Opening WhatsApp… 📱','wa');
+}
+
+// ══════════════════════════════════════════════════
+// FINANCE LOGIC
+// ══════════════════════════════════════════════════
+
+// FIX #9: Correct totalDue — sum all unpaid months minus all payments made
 function totalDue(s, pays){
-  let due = parseFloat(s.prev_due)||0;
+  let owed = parseFloat(s.prev_due)||0;
+  // Add monthly fees from joining date to current month
   if(s.joining_date){
     const j=new Date(s.joining_date);
     const jY=j.getFullYear(), jM=j.getMonth()+1;
-    for(let y=jY;y<=curY;y++){
-      const ms=(y===jY)?jM:1, me=(y===curY)?curM:12;
-      for(let m=ms;m<=me;m++){
-        const paid=pays.filter(p=>p.student_id===s.id&&p.month===m&&p.year===y&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
-        if(paid<s.monthly_fee) due+=(s.monthly_fee-paid);
+    for(let y=jY; y<=curY; y++){
+      const ms=(y===jY)?jM:1;
+      const me=(y===curY)?curM:12;
+      for(let m=ms; m<=me; m++){
+        owed += s.monthly_fee;
       }
     }
   }
-  const prevPaid=pays.filter(p=>p.student_id===s.id&&p.is_prev_due).reduce((a,p)=>a+p.amount,0);
-  return Math.max(0, due-prevPaid);
+  // Subtract ALL payments (regular + prev_due payments)
+  const totalPaid = pays.filter(p=>p.student_id===s.id).reduce((a,p)=>a+p.amount,0);
+  return Math.max(0, owed - totalPaid);
 }
 
-// This month status
 function mStatus(s, pays){
   const mp=pays.filter(p=>p.student_id===s.id&&p.month===curM&&p.year===curY&&!p.is_prev_due);
   const paid=mp.reduce((a,p)=>a+p.amount,0);
@@ -486,14 +554,13 @@ function mStatus(s, pays){
   return{status:'partial',paid,rem:s.monthly_fee-paid};
 }
 
-// Count truly overdue months (>1 month behind with zero payment)
 function overdueMonths(s, pays){
   if(!s.joining_date) return 0;
   const j=new Date(s.joining_date); let cnt=0;
-  for(let y=j.getFullYear();y<=curY;y++){
+  for(let y=j.getFullYear(); y<=curY; y++){
     const ms=(y===j.getFullYear())?j.getMonth()+1:1;
-    const me=(y===curY)?curM-1:12; // exclude current month from overdue
-    for(let m=ms;m<=me;m++){
+    const me=(y===curY)?curM-1:12;
+    for(let m=ms; m<=me; m++){
       const p=pays.filter(x=>x.student_id===s.id&&x.month===m&&x.year===y&&!x.is_prev_due).reduce((a,x)=>a+x.amount,0);
       if(p===0) cnt++;
     }
@@ -503,34 +570,26 @@ function overdueMonths(s, pays){
 
 function updateBellDot(){
   const stus=DB.gs().filter(s=>s.active), pays=DB.gp();
-  const hasAlert=stus.some(s=>overdueMonths(s,pays)>0||totalDue(s,pays)>0);
-  document.getElementById('bellDot').style.display=hasAlert?'block':'none';
-}
-
-// WhatsApp reminder
-function sendWA(s){
-  const st=mStatus(s, DB.gp());
-  const msg=`Hello ${s.parent_name}, your child ${s.student_name}'s tuition fee of ₹${N(s.monthly_fee)} for ${MO[curM-1]} ${curY} is pending. Kindly pay at the earliest. Thank you.`;
-  const num=s.mobile_number.replace(/\D/g,'');
-  const url=`https://wa.me/${num.startsWith('91')?num:'91'+num}?text=${encodeURIComponent(msg)}`;
-  window.open(url,'_blank');
-  toast('Opening WhatsApp… 📱','wa');
+  const has=stus.some(s=>overdueMonths(s,pays)>0||totalDue(s,pays)>0);
+  document.getElementById('bellDot').style.display=has?'block':'none';
 }
 
 // ══════════════════════════════════════════════════
-// NAVIGATION
+// NAVIGATION  — FIX #1 #7 #14
 // ══════════════════════════════════════════════════
-function goPage(p,btn){
+function nav(p){
+  const navMap={dash:'nb-dash',stu:'nb-stu',rep:'nb-rep',alerts:'nb-alerts'};
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
   document.getElementById('pg-'+p).classList.add('on');
-  if(btn) btn.classList.add('on');
-  document.getElementById('scrollEl').scrollTop=0;
+  const nb=document.getElementById(navMap[p]);
+  if(nb) nb.classList.add('on');
   document.getElementById('fab').className=(p==='stu')?'on':'';
+  document.getElementById('scrollEl').scrollTop=0;
   curPg=p;
   if(p==='dash') renderDash();
   if(p==='stu') renderStu();
-  if(p==='rep'){repTab='month'; renderRep();}
+  if(p==='rep'){repTab='month'; document.querySelectorAll('.rtab').forEach((t,i)=>t.classList.toggle('on',i===0)); renderRep();}
   if(p==='alerts') renderAlerts();
   updateBellDot();
 }
@@ -538,15 +597,44 @@ function goPage(p,btn){
 function goDetail(id){
   prevPg=curPg; detId=id;
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
   document.getElementById('pg-det').classList.add('on');
   document.getElementById('fab').className='';
   document.getElementById('scrollEl').scrollTop=0;
   renderDet(id);
 }
 
+// FIX #7: goBack from detail goes back to previous nav page correctly
 function goBack(){
-  const m={dash:'nb-dash',stu:'nb-stu',rep:'nb-rep',alerts:'nb-al'};
-  goPage(prevPg, document.getElementById(m[prevPg]||'nb-dash'));
+  if(prevPg==='det'){
+    // came from detail page → go back to detail
+    goDetail(detId);
+  } else {
+    nav(prevPg||'dash');
+  }
+}
+
+function showFormPage(){
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
+  document.getElementById('pg-form').classList.add('on');
+  document.getElementById('fab').className='';
+  document.getElementById('scrollEl').scrollTop=0;
+}
+
+// ══════════════════════════════════════════════════
+// STUDENT AVATAR HELPER
+// ══════════════════════════════════════════════════
+function avatarHTML(s, size=40){
+  const st=`width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--bdr2);background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.45)}px;overflow:hidden;`;
+  if(s.photo){
+    return`<div style="${st}"><img src="${s.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" loading="lazy"/></div>`;
+  }
+  // Initials fallback
+  const initials=(s.student_name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const colors=['#4f9eff','#22d48a','#a78bfa','#ffb830','#ff5e7a'];
+  const col=colors[s.id%colors.length];
+  return`<div style="${st}background:${col}18;border-color:${col}44;"><span style="color:${col};font-weight:800;font-size:${Math.round(size*0.35)}px;">${initials}</span></div>`;
 }
 
 // ══════════════════════════════════════════════════
@@ -577,24 +665,24 @@ function renderDash(){
   document.getElementById('dod').textContent='₹'+N(totalDueAmt);
   document.getElementById('dpt').textContent=partC;
 
-  // Alert banner
   const overdue=stus.filter(s=>overdueMonths(s,pays)>0);
   document.getElementById('dash-alert-banner').innerHTML=overdue.length
-    ?`<div class="abanner" onclick="goPage('alerts',document.getElementById('nb-al'))">
+    ?`<div class="abanner" onclick="nav('alerts')">
         <div class="ab-ic">🚨</div>
         <div style="flex:1"><div class="ab-t">${overdue.length} student${overdue.length>1?'s':''} with overdue payments</div>
         <div class="ab-s">Tap to view details & send reminders</div></div>
         <div class="ab-ar">›</div></div>`:''
 
-  // Dashboard table — ALL students
   document.getElementById('dashTable').innerHTML=stus.length
-    ? stus.map(s=>stuRow(s,pays,true)).join('')
-    : '<div class="empty"><div class="empty-ic">🎓</div>No students yet. Tap + to add one.</div>';
+    ? stus.map(s=>stuRow(s,pays)).join('')
+    : '<div class="empty"><div class="empty-ic">🎓</div>No students yet.<br>Tap + to add one.</div>';
   updateBellDot();
 }
 
-// Shared student row renderer (dashboard + students page)
-function stuRow(s, pays, isDash=false){
+// ══════════════════════════════════════════════════
+// STUDENT ROW — FIX #4: use data-sid, no JSON inline
+// ══════════════════════════════════════════════════
+function stuRow(s, pays){
   const st=mStatus(s,pays);
   const due=totalDue(s,pays);
   const odm=overdueMonths(s,pays);
@@ -602,13 +690,16 @@ function stuRow(s, pays, isDash=false){
   const isPartial=st.status==='partial';
   return `<div class="dt-row ${st.status}-row">
     <div class="dt-top">
-      <div class="dt-name" onclick="goDetail(${s.id})">${s.student_name}</div>
+      <div class="dt-left">
+        ${avatarHTML(s,38)}
+        <div class="dt-name" onclick="goDetail(${s.id})">${esc(s.student_name)}</div>
+      </div>
       <div class="dt-fee">₹${N(s.monthly_fee)}/mo</div>
     </div>
     <div class="dt-mid">
-      ${s.parent_name?`<span class="tag">👤 ${s.parent_name}</span>`:''}
-      ${s.class_batch?`<span class="tag">${s.class_batch}</span>`:''}
-      ${s.subject?`<span class="tag">${s.subject}</span>`:''}
+      ${s.parent_name?`<span class="tag">👤 ${esc(s.parent_name)}</span>`:''}
+      ${s.class_batch?`<span class="tag">${esc(s.class_batch)}</span>`:''}
+      ${s.subject?`<span class="tag">${esc(s.subject)}</span>`:''}
       <span class="bdg ${st.status}">${isPartial?`⚡ PARTIAL — ₹${N(st.paid)} paid`:isPaid?'✓ PAID':'✗ UNPAID'}</span>
       ${odm>0?`<span class="bdg overdue">🔴 ${odm}mo overdue</span>`:''}
     </div>
@@ -616,11 +707,11 @@ function stuRow(s, pays, isDash=false){
     ${due>0&&isPaid?`<div class="partial-line">⚠ Previous balance: ₹${N(due)}</div>`:''}
     <div class="dt-btns">
       ${!isPaid
-        ? `<button class="dt-btn pay-btn" onclick="openPay(${s.id},${s.monthly_fee},${st.rem})">💰 ${isPartial?'Add More':'Mark Paid'}</button>`
-        : `<button class="dt-btn paid-btn">✓ Paid</button>`
+        ?`<button class="dt-btn pay-btn" onclick="openPay(${s.id})">💰 ${isPartial?'Add More':'Mark Paid'}</button>`
+        :`<button class="dt-btn paid-btn">✓ Paid</button>`
       }
-      <button class="dt-btn wa-btn" onclick="sendWA(${JSON.stringify(s).replace(/"/g,'&quot;')})">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.124 1.532 5.856L.044 23.552a.5.5 0 00.593.594l5.817-1.474A11.949 11.949 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.524-5.2-1.435l-.372-.222-3.853.977.998-3.735-.244-.386A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      <button class="dt-btn wa-btn" onclick="sendWA(${s.id})">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.124 1.532 5.856L.044 23.552a.5.5 0 00.593.594l5.817-1.474A11.949 11.949 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.524-5.2-1.435l-.372-.222-3.853.977.998-3.735-.244-.386A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
         WhatsApp
       </button>
       <button class="dt-btn detail-btn" onclick="goDetail(${s.id})">View →</button>
@@ -633,28 +724,31 @@ function stuRow(s, pays, isDash=false){
 // ══════════════════════════════════════════════════
 function renderStu(){
   const stus=DB.gs().filter(s=>s.active), pays=DB.gp();
-  const q=document.getElementById('srchIn').value.toLowerCase();
+  const q=(document.getElementById('srchIn').value||'').toLowerCase();
   let list=stus.filter(s=>
-    s.student_name.toLowerCase().includes(q)||
+    (s.student_name||'').toLowerCase().includes(q)||
     (s.parent_name||'').toLowerCase().includes(q)||
     (s.class_batch||'').toLowerCase().includes(q)||
     (s.subject||'').toLowerCase().includes(q)||
     (s.mobile_number||'').includes(q)
-  );
-  list=list.filter(s=>{
-    if(chip==='all') return true;
+  ).filter(s=>{
+    if(chipFilter==='all') return true;
     const st=mStatus(s,pays).status;
-    if(chip==='overdue') return overdueMonths(s,pays)>0||totalDue(s,pays)>0;
-    return st===chip;
+    if(chipFilter==='overdue') return overdueMonths(s,pays)>0||totalDue(s,pays)>0;
+    return st===chipFilter;
   });
   document.getElementById('stuEmpty').style.display=list.length?'none':'block';
-  document.getElementById('stuList').innerHTML=list.map(s=>stuRow(s,pays,false)).join('');
+  document.getElementById('stuList').innerHTML=list.map(s=>stuRow(s,pays)).join('');
 }
-function filterStu(){renderStu();}
-function setChip(f,el){chip=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderStu();}
+function setChip(f,el){
+  chipFilter=f;
+  document.querySelectorAll('.chip-f').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  renderStu();
+}
 
 // ══════════════════════════════════════════════════
-// DETAIL PAGE
+// DETAIL PAGE — FIX #7: back button now works correctly
 // ══════════════════════════════════════════════════
 function renderDet(id){
   const s=DB.gs().find(x=>x.id===id); if(!s) return;
@@ -665,7 +759,6 @@ function renderDet(id){
   const due=totalDue(s,pays);
   const odm=overdueMonths(s,pays);
 
-  // 12-month tracker
   let cells='';
   for(let i=11;i>=0;i--){
     const d=new Date(curY,curM-1-i,1);
@@ -687,30 +780,35 @@ function renderDet(id){
   document.getElementById('pg-det').innerHTML=`
     <div class="det-hero">
       <button class="back-btn" onclick="goBack()">← Back</button>
-      <div class="det-name">${s.student_name}</div>
-      <div class="det-row">
-        <span style="font-size:13px;color:var(--txt2);font-family:var(--mono);font-weight:600">₹${N(s.monthly_fee)}/mo</span>
-        <span class="bdg ${st.status}">${st.status==='partial'?`⚡ PARTIAL — ₹${N(st.paid)} paid`:st.status==='paid'?'✓ PAID':'✗ UNPAID'}</span>
-        ${odm>0?`<span class="bdg overdue">🔴 ${odm}mo overdue</span>`:''}
+      <div class="det-top">
+        ${avatarHTML(s,56)}
+        <div>
+          <div class="det-name">${esc(s.student_name)}</div>
+          <div class="det-row">
+            <span style="font-size:13px;color:var(--txt2);font-family:var(--mono);font-weight:600">₹${N(s.monthly_fee)}/mo</span>
+            <span class="bdg ${st.status}">${st.status==='partial'?`⚡ PARTIAL — ₹${N(st.paid)} paid`:st.status==='paid'?'✓ PAID':'✗ UNPAID'}</span>
+            ${odm>0?`<span class="bdg overdue">🔴 ${odm}mo overdue</span>`:''}
+          </div>
+        </div>
       </div>
       <div class="dtags">
-        ${s.parent_name?`<span class="dtag">👤 ${s.parent_name}</span>`:''}
-        ${s.class_batch?`<span class="dtag">📚 ${s.class_batch}</span>`:''}
-        ${s.subject?`<span class="dtag">📖 ${s.subject}</span>`:''}
+        ${s.parent_name?`<span class="dtag">👤 ${esc(s.parent_name)}</span>`:''}
+        ${s.class_batch?`<span class="dtag">📚 ${esc(s.class_batch)}</span>`:''}
+        ${s.subject?`<span class="dtag">📖 ${esc(s.subject)}</span>`:''}
         ${s.joining_date?`<span class="dtag">📅 Joined ${s.joining_date}</span>`:''}
       </div>
     </div>
 
     ${due>0?`<div class="total-due-box">
-      <div><div class="tdb-l">⚠ Total Outstanding Balance</div><div style="font-size:11px;color:var(--txt3);margin-top:2px">Includes current + previous dues</div></div>
+      <div><div class="tdb-l">⚠ Total Outstanding Balance</div><div style="font-size:11px;color:var(--txt3);margin-top:2px">Includes all pending dues</div></div>
       <div class="tdb-v">₹${N(due)}</div>
     </div>`:''}
 
     <div class="act-row">
-      <button class="abtn pri" onclick="openPay(${s.id},${s.monthly_fee},${st.rem})"><span>💰</span>Payment</button>
-      <button class="abtn wa" onclick="sendWA(${JSON.stringify(s).replace(/"/g,'&quot;')})"><span>📱</span>WhatsApp</button>
-      <button class="abtn" onclick="openEdit(${s.id})"><span>✏️</span>Edit</button>
-      <button class="abtn del" onclick="delStu(${s.id})"><span>🗑</span>Delete</button>
+      <button class="abtn pri" onclick="openPay(${s.id})"><span>💰</span>Payment</button>
+      <button class="abtn wa"  onclick="sendWA(${s.id})"><span>📱</span>WhatsApp</button>
+      <button class="abtn"     onclick="openEdit(${s.id})"><span>✏️</span>Edit</button>
+      <button class="abtn del" onclick="confirmDel(${s.id})"><span>🗑</span>Delete</button>
     </div>
 
     <div class="due-box">
@@ -720,19 +818,18 @@ function renderDet(id){
       ${st.status==='unpaid'?`<div class="dbr"><span class="dbl">Due This Month</span><span class="dbv mono r">₹${N(s.monthly_fee)}</span></div>`:''}
       <div class="dbr"><span class="dbl">Previous Outstanding</span><span class="dbv mono ${(s.prev_due||0)>0?'y':'g'}">${(s.prev_due||0)>0?'₹'+N(s.prev_due):'None'}</span></div>
       <div class="dbr"><span class="dbl">Total Collected</span><span class="dbv mono g">₹${N(totalP)}</span></div>
-      <div class="dbr"><span class="dbl">Full Months Paid</span><span class="dbv">${allPays.filter(p=>p.amount>=s.monthly_fee).length}</span></div>
     </div>
 
     <div class="inf-sec">
       <div class="inf-ttl">Contact Details</div>
-      <div class="inf-row"><span class="il">Student</span><span class="iv">${s.student_name}</span></div>
-      <div class="inf-row"><span class="il">Parent</span><span class="iv">${s.parent_name||'—'}</span></div>
-      <div class="inf-row"><span class="il">Mobile</span><span class="iv"><a href="tel:${s.mobile_number}">${s.mobile_number||'—'}</a></span></div>
-      ${s.class_batch?`<div class="inf-row"><span class="il">Class / Batch</span><span class="iv">${s.class_batch}</span></div>`:''}
-      ${s.subject?`<div class="inf-row"><span class="il">Subject</span><span class="iv">${s.subject}</span></div>`:''}
+      <div class="inf-row"><span class="il">Student</span><span class="iv">${esc(s.student_name)}</span></div>
+      <div class="inf-row"><span class="il">Parent</span><span class="iv">${esc(s.parent_name||'—')}</span></div>
+      <div class="inf-row"><span class="il">Mobile</span><span class="iv"><a href="tel:${esc(s.mobile_number)}">${esc(s.mobile_number||'—')}</a></span></div>
+      ${s.class_batch?`<div class="inf-row"><span class="il">Class / Batch</span><span class="iv">${esc(s.class_batch)}</span></div>`:''}
+      ${s.subject?`<div class="inf-row"><span class="il">Subject</span><span class="iv">${esc(s.subject)}</span></div>`:''}
     </div>
 
-    ${s.notes?`<div class="inf-sec"><div class="inf-ttl">Notes</div><div style="font-size:13px;color:var(--txt2);padding-top:4px;line-height:1.6">${s.notes}</div></div>`:''}
+    ${s.notes?`<div class="inf-sec"><div class="inf-ttl">Notes</div><div style="font-size:13px;color:var(--txt2);padding-top:4px;line-height:1.6">${esc(s.notes)}</div></div>`:''}
 
     <div style="padding:14px 16px 6px"><div class="inf-ttl">Payment Tracker — Last 12 Months</div></div>
     <div class="mgrid">${cells}</div>
@@ -740,26 +837,31 @@ function renderDet(id){
     <div class="ph-wrap">
       <div class="ph-ttl">Payment History</div>
       ${allPays.length
-        ? [...allPays].sort((a,b)=>b.year-a.year||b.month-a.month).map(p=>`
+        ?[...allPays].sort((a,b)=>b.year-a.year||b.month-a.month||b.id-a.id).map(p=>`
           <div class="pitem ${p.amount<s.monthly_fee?'pp':''}">
             <div class="pl">
               <span class="pm-l">${MO[p.month-1]} ${p.year}</span>
               <span class="pd-l">${p.payment_date}</span>
-              <span class="pmo-l">${p.mode||'Cash'}${p.note?' · '+p.note:''}</span>
+              <span class="pmo-l">${p.mode||'Cash'}${p.note?' · '+esc(p.note):''}</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px">
               <span class="pa-l ${p.amount<s.monthly_fee?'pt':''}">+₹${N(p.amount)}</span>
-              <button class="pdel" onclick="delPay(${p.id},${id})">🗑</button>
+              <button class="pdel" onclick="confirmDelPay(${p.id},${id})">🗑</button>
             </div>
           </div>`).join('')
-        : '<div style="color:var(--txt3);font-size:13px;padding:8px 0">No payments recorded yet.</div>'}
+        :'<div style="color:var(--txt3);font-size:13px;padding:8px 0">No payments recorded yet.</div>'}
     </div>`;
 }
 
 // ══════════════════════════════════════════════════
-// REPORTS
+// REPORTS — FIX #15: exclude is_prev_due from all-time
 // ══════════════════════════════════════════════════
-function showRT(t,el){repTab=t;document.querySelectorAll('.rtab').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderRep();}
+function showRT(t,el){
+  repTab=t;
+  document.querySelectorAll('.rtab').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  renderRep();
+}
 function renderRep(){
   const stus=DB.gs().filter(s=>s.active), pays=DB.gp();
   let html='';
@@ -769,24 +871,33 @@ function renderRep(){
     const unpaid=stus.filter(s=>mStatus(s,pays).status==='unpaid');
     html=`
       <div class="rcard"><div class="rttl">✅ Fully Paid — ${paid.length} students</div>
-        ${paid.length?paid.map(s=>{const p=pays.find(x=>x.student_id===s.id&&x.month===curM&&x.year===curY);return`<div class="rrow"><div><div class="rn">${s.student_name}</div><div class="rs">${s.parent_name||''} · ${s.class_batch||''}</div></div><span class="rv g">₹${N(p?p.amount:s.monthly_fee)}</span></div>`;}).join(''):'<div style="color:var(--txt3);font-size:13px;padding:6px 0">None yet</div>'}
+        ${paid.length?paid.map(s=>{const p=pays.find(x=>x.student_id===s.id&&x.month===curM&&x.year===curY&&!x.is_prev_due);
+          return`<div class="rrow"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${esc(s.parent_name||'')} · ${esc(s.class_batch||'')}</div></div><span class="rv g">₹${N(p?p.amount:s.monthly_fee)}</span></div>`;}).join('')
+          :'<div style="color:var(--txt3);font-size:13px;padding:6px 0">None yet</div>'}
       </div>
       <div class="rcard"><div class="rttl">⚡ Partial — ${partial.length} students</div>
-        ${partial.length?partial.map(s=>{const st=mStatus(s,pays);return`<div class="rrow"><div><div class="rn">${s.student_name}</div><div class="rs">Paid ₹${N(st.paid)} · Remaining ₹${N(st.rem)}</div></div><span class="rv y">₹${N(st.rem)} left</span></div>`;}).join(''):'<div style="color:var(--txt3);font-size:13px;padding:6px 0">None</div>'}
+        ${partial.length?partial.map(s=>{const st=mStatus(s,pays);
+          return`<div class="rrow"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">Paid ₹${N(st.paid)} · Remaining ₹${N(st.rem)}</div></div><span class="rv y">₹${N(st.rem)} left</span></div>`;}).join('')
+          :'<div style="color:var(--txt3);font-size:13px;padding:6px 0">None</div>'}
       </div>
       <div class="rcard"><div class="rttl">❌ Unpaid — ${unpaid.length} students</div>
-        ${unpaid.length?unpaid.map(s=>`<div class="rrow"><div><div class="rn">${s.student_name}</div><div class="rs">${s.parent_name||''} · ${s.mobile_number||''}</div></div><span class="rv r">₹${N(s.monthly_fee)}</span></div>`).join(''):'<div style="color:var(--grn);font-size:13px;padding:6px 0">🎉 All paid this month!</div>'}
+        ${unpaid.length?unpaid.map(s=>`<div class="rrow"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${esc(s.parent_name||'')} · ${esc(s.mobile_number||'')}</div></div><span class="rv r">₹${N(s.monthly_fee)}</span></div>`).join('')
+          :'<div style="color:var(--grn);font-size:13px;padding:6px 0">🎉 All paid this month!</div>'}
       </div>`;
   } else if(repTab==='dues'){
     const wd=stus.map(s=>({...s,due:totalDue(s,pays),odm:overdueMonths(s,pays)})).filter(s=>s.due>0).sort((a,b)=>b.due-a.due);
     html=`<div class="rcard">
       <div class="rttl">Total Outstanding: ₹${N(wd.reduce((a,s)=>a+s.due,0))}</div>
-      ${wd.length?wd.map(s=>`<div class="rrow"><div><div class="rn">${s.student_name}</div><div class="rs">${s.odm} month${s.odm!==1?'s':''} overdue · ₹${N(s.monthly_fee)}/mo</div></div><span class="rv r">₹${N(s.due)}</span></div>`).join('')
+      ${wd.length?wd.map(s=>`<div class="rrow"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${s.odm} month${s.odm!==1?'s':''} overdue · ₹${N(s.monthly_fee)}/mo</div></div><span class="rv r">₹${N(s.due)}</span></div>`).join('')
       :'<div style="color:var(--grn);font-size:13px;padding:6px 0">🎉 No outstanding dues!</div>'}
     </div>`;
   } else {
     html=`<div class="rcard"><div class="rttl">All-Time Collection</div>
-      ${stus.length?stus.map(s=>{const t=pays.filter(p=>p.student_id===s.id&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);const m=pays.filter(p=>p.student_id===s.id&&!p.is_prev_due&&p.amount>=s.monthly_fee).length;return`<div class="rrow"><div><div class="rn">${s.student_name}</div><div class="rs">${m} full months paid</div></div><span class="rv g">₹${N(t)}</span></div>`;}).join('')
+      ${stus.length?stus.map(s=>{
+        // FIX #15: exclude prev_due payments from "regular" collection display
+        const t=pays.filter(p=>p.student_id===s.id&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
+        const m=pays.filter(p=>p.student_id===s.id&&!p.is_prev_due&&p.amount>=s.monthly_fee).length;
+        return`<div class="rrow"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${m} full months paid</div></div><span class="rv g">₹${N(t)}</span></div>`;}).join('')
       :'<div style="color:var(--txt3);font-size:13px;padding:6px 0">No students yet.</div>'}
     </div>`;
   }
@@ -794,7 +905,7 @@ function renderRep(){
 }
 
 // ══════════════════════════════════════════════════
-// ALERTS PAGE
+// ALERTS
 // ══════════════════════════════════════════════════
 function renderAlerts(){
   const stus=DB.gs().filter(s=>s.active), pays=DB.gp();
@@ -809,15 +920,13 @@ function renderAlerts(){
         <div class="rttl" style="color:var(--red)">🚨 Overdue Students (${overdue.length})</div>
         ${overdue.map(s=>`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer">
           <div>
-            <div class="rn">${s.student_name}</div>
-            <div class="rs">Parent: ${s.parent_name||'—'} · 📞 ${s.mobile_number||'—'}</div>
-            <div class="rs">${s.odm} month${s.odm!==1?'s':''} unpaid in a row</div>
+            <div class="rn">${esc(s.student_name)}</div>
+            <div class="rs">Parent: ${esc(s.parent_name||'—')} · 📞 ${esc(s.mobile_number||'—')}</div>
+            <div class="rs">${s.odm} month${s.odm!==1?'s':''} unpaid</div>
           </div>
           <div style="text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
             <div class="rv r">₹${N(s.due)}</div>
-            <button class="dt-btn wa-btn" style="font-size:10px;padding:5px 9px" onclick="event.stopPropagation();sendWA(${JSON.stringify(s).replace(/"/g,'&quot;')})">
-              📱 Remind
-            </button>
+            <button class="dt-btn wa-btn" style="font-size:10px;padding:5px 9px" onclick="event.stopPropagation();sendWA(${s.id})">📱 Remind</button>
           </div>
         </div>`).join('')}
       </div>`;
@@ -825,17 +934,65 @@ function renderAlerts(){
       <div class="rcard" style="border-color:var(--ylw)55;margin-top:14px">
         <div class="rttl" style="color:var(--ylw)">⚡ Partial Payments This Month (${partial.length})</div>
         ${partial.map(s=>{const st=mStatus(s,pays);return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer">
-          <div><div class="rn">${s.student_name}</div><div class="rs">Paid ₹${N(st.paid)} of ₹${N(s.monthly_fee)}</div></div>
+          <div><div class="rn">${esc(s.student_name)}</div><div class="rs">Paid ₹${N(st.paid)} of ₹${N(s.monthly_fee)}</div></div>
           <div style="text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
             <span class="rv y">₹${N(st.rem)} left</span>
-            <button class="dt-btn wa-btn" style="font-size:10px;padding:5px 9px" onclick="event.stopPropagation();sendWA(${JSON.stringify(s).replace(/"/g,'&quot;')})">
-              📱 Remind
-            </button>
+            <button class="dt-btn wa-btn" style="font-size:10px;padding:5px 9px" onclick="event.stopPropagation();sendWA(${s.id})">📱 Remind</button>
           </div>
         </div>`;}).join('')}
       </div>`;
   }
   document.getElementById('alertsContent').innerHTML=html;
+}
+
+// ══════════════════════════════════════════════════
+// STUDENT PHOTO
+// ══════════════════════════════════════════════════
+function handleImg(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendingImgData=e.target.result;
+    const prev=document.getElementById('imgPreview');
+    prev.innerHTML=`<img src="${pendingImgData}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  };
+  reader.readAsDataURL(file);
+}
+function clearImg(){
+  pendingImgData=null;
+  document.getElementById('imgPreview').innerHTML='📷';
+  document.getElementById('imgFile').value='';
+}
+
+// ══════════════════════════════════════════════════
+// CONTACT PICKER — FIX #12: graceful fallback
+// ══════════════════════════════════════════════════
+async function pickContact(){
+  // Contact Picker API — works on Android Chrome 80+
+  if('contacts' in navigator && 'ContactsManager' in window){
+    try{
+      const contacts=await navigator.contacts.select(['name','tel'],{multiple:false});
+      if(contacts&&contacts.length>0){
+        const c=contacts[0];
+        if(c.tel&&c.tel.length>0){
+          let num=c.tel[0].replace(/\D/g,'');
+          if(num.startsWith('91')&&num.length===12) num=num.slice(2);
+          document.getElementById('fmob').value=num;
+        }
+        if(c.name&&c.name.length>0&&!document.getElementById('fpn').value){
+          document.getElementById('fpn').value=c.name[0];
+        }
+        toast('Contact picked! ✓','ok');
+      }
+    } catch(e){
+      toast('Could not pick contact','er');
+    }
+  } else {
+    // Fallback: show message
+    toast('Contact picker not supported on this browser. Use Android Chrome.','er');
+    document.getElementById('contactNote').textContent='⚠️ Not supported on this browser. Please type manually.';
+    document.getElementById('contactNote').style.color='var(--red)';
+  }
 }
 
 // ══════════════════════════════════════════════════
@@ -863,20 +1020,29 @@ function togMo(m,y){
 }
 
 function openAdd(){
-  editId=null; prevPg=curPg;
+  editId=null; prevPg=curPg; pendingImgData=null;
   document.getElementById('fTtl').textContent='Add Student';
   document.getElementById('fSub').textContent='Fill in the student details';
-  document.getElementById('dueSec').style.display='block';
+  document.getElementById('dueSec').style.display='block'; // FIX #8: show due sec only for add
+  document.getElementById('imgPreview').innerHTML='📷';
+  document.getElementById('imgFile').value='';
   ['fn','fpn','fmob','fcls','fsub_','ffee','fnotes','fprev'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fjd').value=now.toISOString().split('T')[0];
+  document.getElementById('contactNote').textContent='📱 Tap "Contacts" to pick from your phone\'s contacts';
+  document.getElementById('contactNote').style.color='';
   dueType='amt'; pickedMos=[]; setDT('amt');
   showFormPage();
 }
+
 function openEdit(id){
-  const s=DB.gs().find(x=>x.id===id); editId=id; prevPg='det';
+  const s=DB.gs().find(x=>x.id===id);
+  editId=id; prevPg='det'; pendingImgData=s.photo||null;
   document.getElementById('fTtl').textContent='Edit Student';
   document.getElementById('fSub').textContent='Update student information';
-  document.getElementById('dueSec').style.display='block';
+  document.getElementById('dueSec').style.display='none'; // FIX #8: hide for edit
+  const prev=document.getElementById('imgPreview');
+  prev.innerHTML=s.photo?`<img src="${s.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:'📷';
+  document.getElementById('imgFile').value='';
   document.getElementById('fn').value=s.student_name||'';
   document.getElementById('fpn').value=s.parent_name||'';
   document.getElementById('fmob').value=s.mobile_number||'';
@@ -886,22 +1052,15 @@ function openEdit(id){
   document.getElementById('fjd').value=s.joining_date||'';
   document.getElementById('fnotes').value=s.notes||'';
   document.getElementById('fprev').value=s.prev_due||'';
-  dueType='amt'; pickedMos=[]; setDT('amt');
   showFormPage();
-}
-function showFormPage(){
-  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
-  document.getElementById('pg-form').classList.add('on');
-  document.getElementById('fab').className='';
-  document.getElementById('scrollEl').scrollTop=0;
 }
 
 function saveStu(){
-  const name=document.getElementById('fn').value.trim();
+  const name=(document.getElementById('fn').value||'').trim();
   const fee=parseFloat(document.getElementById('ffee').value);
-  const mobile=document.getElementById('fmob').value.trim();
+  const mobile=(document.getElementById('fmob').value||'').trim();
   if(!name){toast('Enter student name','er');return;}
-  if(!fee||fee<=0){toast('Enter monthly fee','er');return;}
+  if(!fee||fee<=0){toast('Enter a valid monthly fee','er');return;}
   if(!mobile){toast('Enter mobile number','er');return;}
 
   const stus=DB.gs();
@@ -910,58 +1069,84 @@ function saveStu(){
 
   const obj={
     student_name:name,
-    parent_name:document.getElementById('fpn').value.trim(),
+    parent_name:(document.getElementById('fpn').value||'').trim(),
     mobile_number:mobile,
-    class_batch:document.getElementById('fcls').value.trim(),
-    subject:document.getElementById('fsub_').value.trim(),
+    class_batch:(document.getElementById('fcls').value||'').trim(),
+    subject:(document.getElementById('fsub_').value||'').trim(),
     monthly_fee:fee,
     joining_date:document.getElementById('fjd').value,
-    notes:document.getElementById('fnotes').value.trim(),
+    notes:(document.getElementById('fnotes').value||'').trim(),
     prev_due:prevDue,
+    photo:pendingImgData||null,
     active:true
   };
 
   if(editId){
     const i=stus.findIndex(s=>s.id===editId);
     stus[i]={...stus[i],...obj};
-    DB.ss(stus); toast('Student updated! ✓','ok');
-    prevPg='dash'; goDetail(editId);
+    DB.ss(stus);
+    toast('Student updated! ✓','ok');
+    goDetail(editId);
   } else {
     obj.id=DB.nid(stus);
     stus.push(obj); DB.ss(stus);
     toast('Student added! ✓','ok');
-    goPage('stu',document.getElementById('nb-stu'));
+    nav('stu');
   }
 }
 
-function delStu(id){
-  if(!confirm('Delete this student and all payment records?')) return;
+// FIX #5: Custom modal instead of confirm() for delete
+function confirmDel(id){
+  const s=DB.gs().find(x=>x.id===id); if(!s) return;
+  document.getElementById('delMsg').textContent=`Delete "${s.student_name}"? All payment records will be permanently removed.`;
+  document.getElementById('delConfirmBtn').onclick=()=>doDelStu(id);
+  document.getElementById('delOv').classList.add('on');
+}
+function doDelStu(id){
   DB.ss(DB.gs().filter(s=>s.id!==id));
   DB.sp(DB.gp().filter(p=>p.student_id!==id));
+  closeOv('delOv');
   toast('Student deleted');
-  goPage('stu',document.getElementById('nb-stu'));
+  nav('stu');
+}
+
+function confirmDelPay(pid,sid){
+  document.getElementById('delMsg').textContent='Remove this payment record?';
+  document.getElementById('delConfirmBtn').onclick=()=>doDelPay(pid,sid);
+  document.getElementById('delOv').classList.add('on');
+}
+function doDelPay(pid,sid){
+  DB.sp(DB.gp().filter(p=>p.id!==pid));
+  closeOv('delOv');
+  toast('Payment removed');
+  renderDet(sid);
 }
 
 // ══════════════════════════════════════════════════
-// PAYMENT MODAL
+// PAYMENT MODAL — FIX #10: show full balance, not just current month
 // ══════════════════════════════════════════════════
-function openPay(sid,fee,rem){
+function openPay(sid){
   payId=sid;
+  const s=DB.gs().find(x=>x.id===sid); if(!s) return;
+  const pays=DB.gp();
+  const st=mStatus(s,pays);
   document.getElementById('pm').value=curM;
   document.getElementById('pyr').value=curY;
-  document.getElementById('pamt').value=rem>0?rem:fee;
+  // Pre-fill with remaining amount for current month
+  document.getElementById('pamt').value=st.rem>0?st.rem:s.monthly_fee;
   document.getElementById('pnote').value='';
   document.getElementById('pmode').value='Cash';
-  document.getElementById('partHint').classList.toggle('on',rem>0&&rem<fee);
-  if(rem>0&&rem<fee) document.getElementById('partBal').textContent=N(rem);
+  const showHint=st.status==='partial';
+  document.getElementById('partHint').classList.toggle('on',showHint);
+  if(showHint) document.getElementById('partBal').textContent=N(st.rem);
   document.getElementById('payOv').classList.add('on');
 }
+
 function chkPartial(){
   const s=DB.gs().find(x=>x.id===payId); if(!s) return;
   const month=parseInt(document.getElementById('pm').value);
   const year=parseInt(document.getElementById('pyr').value);
-  const pays=DB.gp();
-  const already=pays.filter(p=>p.student_id===payId&&p.month===month&&p.year===year&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
+  const already=DB.gp().filter(p=>p.student_id===payId&&p.month===month&&p.year===year&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
   const entering=parseFloat(document.getElementById('pamt').value)||0;
   const total=already+entering;
   if(entering>0&&total<s.monthly_fee){
@@ -971,6 +1156,7 @@ function chkPartial(){
     document.getElementById('partHint').classList.remove('on');
   }
 }
+
 function closeOv(id){document.getElementById(id).classList.remove('on');}
 
 function savePay(){
@@ -981,47 +1167,50 @@ function savePay(){
   const s=DB.gs().find(x=>x.id===payId);
   const pays=DB.gp();
   const already=pays.filter(p=>p.student_id===payId&&p.month===month&&p.year===year&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
-  if(already+amount>s.monthly_fee*1.5){if(!confirm('Amount exceeds the monthly fee. Confirm?')) return;}
   const total=already+amount;
   const status=total>=s.monthly_fee?'Paid':'Partial';
   pays.push({
     id:DB.nid(pays),
     student_id:payId,
-    month, year,
-    status,
+    month,year,status,
     payment_date:now.toLocaleDateString('en-IN'),
     amount,
     mode:document.getElementById('pmode').value,
-    note:document.getElementById('pnote').value,
+    note:(document.getElementById('pnote').value||'').trim(),
     is_prev_due:false
   });
   DB.sp(pays);
   closeOv('payOv');
-  toast(status==='Paid'?'Full payment recorded ✓':'Partial payment recorded ⚡', status==='Paid'?'ok':'');
-  renderDet(payId);
+  toast(status==='Paid'?'Full payment recorded ✓':'Partial payment recorded ⚡',status==='Paid'?'ok':'');
+  // Refresh whichever page is currently visible
+  if(document.getElementById('pg-det').classList.contains('on')) renderDet(payId);
+  else if(document.getElementById('pg-dash').classList.contains('on')) renderDash();
+  else renderStu();
   updateBellDot();
 }
 
-function delPay(pid,sid){
-  if(!confirm('Remove this payment?')) return;
-  DB.sp(DB.gp().filter(p=>p.id!==pid));
-  toast('Payment removed');
-  renderDet(sid);
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 }
 
+// Close modals on backdrop tap
+['payOv','delOv'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeOv(id);});
+});
+
 // ══════════════════════════════════════════════════
-// DEMO DATA
+// DEMO DATA — FIX #11: only seed if NO students exist
 // ══════════════════════════════════════════════════
-if(!localStorage.getItem('tp_v3')){
-  localStorage.removeItem('tp_students');
-  localStorage.removeItem('tp_payments');
-  localStorage.setItem('tp_v3','1');
-  const jd=(mOffset)=>{const d=new Date(curY,curM-1-mOffset,1);return d.toISOString().split('T')[0];};
+if(DB.gs().length===0){
+  const jd=(mOff)=>{const d=new Date(curY,curM-1-mOff,1);return d.toISOString().split('T')[0];};
   DB.ss([
-    {id:1,student_name:'Arjun Sharma',parent_name:'Rajesh Sharma',mobile_number:'9876543210',class_batch:'10th A',subject:'Mathematics',monthly_fee:1500,joining_date:jd(3),notes:'Sincere student, quick learner',prev_due:0,active:true},
-    {id:2,student_name:'Priya Reddy',parent_name:'Suresh Reddy',mobile_number:'9123456789',class_batch:'9th B',subject:'Science',monthly_fee:1200,joining_date:jd(4),notes:'',prev_due:2400,active:true},
-    {id:3,student_name:'Rohit Verma',parent_name:'Anil Verma',mobile_number:'9988776655',class_batch:'11th',subject:'Physics',monthly_fee:2000,joining_date:jd(2),notes:'Needs help in optics chapter',prev_due:0,active:true},
-    {id:4,student_name:'Sneha Iyer',parent_name:'Mohan Iyer',mobile_number:'9871234567',class_batch:'8th',subject:'English',monthly_fee:1000,joining_date:jd(1),notes:'',prev_due:0,active:true},
+    {id:1,student_name:'Arjun Sharma',parent_name:'Rajesh Sharma',mobile_number:'9876543210',class_batch:'10th A',subject:'Mathematics',monthly_fee:1500,joining_date:jd(3),notes:'Sincere student, quick learner',prev_due:0,photo:null,active:true},
+    {id:2,student_name:'Priya Reddy',parent_name:'Suresh Reddy',mobile_number:'9123456789',class_batch:'9th B',subject:'Science',monthly_fee:1200,joining_date:jd(4),notes:'',prev_due:2400,photo:null,active:true},
+    {id:3,student_name:'Rohit Verma',parent_name:'Anil Verma',mobile_number:'9988776655',class_batch:'11th',subject:'Physics',monthly_fee:2000,joining_date:jd(2),notes:'Needs help in optics chapter',prev_due:0,photo:null,active:true},
+    {id:4,student_name:'Sneha Iyer',parent_name:'Mohan Iyer',mobile_number:'9871234567',class_batch:'8th',subject:'English',monthly_fee:1000,joining_date:jd(1),notes:'',prev_due:0,photo:null,active:true},
   ]);
   DB.sp([
     {id:1,student_id:1,month:curM,year:curY,status:'Paid',payment_date:now.toLocaleDateString('en-IN'),amount:1500,mode:'UPI',note:'',is_prev_due:false},
@@ -1032,11 +1221,8 @@ if(!localStorage.getItem('tp_v3')){
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
-function setHdrDate(){
-  document.getElementById('hdrM').textContent=now.getDate()+' '+MO[curM-1].slice(0,3)+' '+curY;
-}
+document.getElementById('hdrM').textContent=now.getDate()+' '+MO[curM-1].slice(0,3)+' '+curY;
 renderDash();
-setHdrDate();
 updateBellDot();
 </script>
 </body>
