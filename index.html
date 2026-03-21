@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="theme-color" content="#0a0f1e"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="TuitionPro">
-<title>TuitionPro</title>
+<meta name="apple-mobile-web-app-title" content="TuitionZen">
+<title>TuitionZen</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -38,6 +38,29 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
 .hdr-badge{background:var(--surf2);border:1px solid var(--bdr2);border-radius:20px;padding:4px 11px;font-size:11px;color:var(--txt2);font-family:var(--mono);}
 .hdr-bell{width:34px;height:34px;background:var(--surf2);border:1px solid var(--bdr2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative;flex-shrink:0;}
 .bell-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--bg);display:none;}
+
+/* ── PRIVACY TOGGLE BUTTON ── */
+.hdr-privacy{width:34px;height:34px;background:var(--surf2);border:1px solid var(--bdr2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;flex-shrink:0;transition:all .2s;position:relative;overflow:hidden;}
+.hdr-privacy:active{transform:scale(.92);}
+.hdr-privacy.locked{background:var(--ylw)18;border-color:var(--ylw)66;}
+.hdr-privacy .priv-ic{transition:transform .2s, opacity .2s;}
+
+/* ── PRIVACY MASK ── */
+.amt{ transition: opacity .15s; }
+.amt.masked{ font-family:var(--mono); letter-spacing:1px; }
+
+/* ── PRIVACY BANNER ── */
+.privacy-banner{
+  display:none;
+  align-items:center;gap:8px;
+  background:linear-gradient(90deg,var(--ylw)18,var(--ylw)0a);
+  border-bottom:1px solid var(--ylw)44;
+  padding:6px 16px;
+  font-size:11px;color:var(--ylw);font-weight:700;
+  flex-shrink:0;
+  animation:slideDown .2s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── SCROLL ── */
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
@@ -319,14 +342,24 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
   <div class="logo">
     <div class="logo-ic">🎓</div>
     <div>
-      <div class="logo-tx">Tuition<b>Pro</b></div>
+      <div class="logo-tx">Tuition<b>Zen</b></div>
       <div class="logo-sub" id="hdrInst"></div>
     </div>
   </div>
   <div class="hdr-r">
     <div class="hdr-badge" id="hdrM"></div>
+    <!-- PRIVACY TOGGLE -->
+    <div class="hdr-privacy" id="privacyBtn" onclick="togglePrivacy()" title="Toggle privacy mode">
+      <span id="privacyIcon">👁️</span>
+    </div>
     <div class="hdr-bell" onclick="nav('alerts')">🔔<div class="bell-dot" id="bellDot"></div></div>
   </div>
+</div>
+
+<!-- PRIVACY BANNER -->
+<div class="privacy-banner" id="privacyBanner">
+  🔒 Privacy Mode — amounts hidden
+  <span style="margin-left:auto;font-size:10px;opacity:.7;cursor:pointer" onclick="togglePrivacy()">tap 👁️ to show</span>
 </div>
 
 <!-- ── SCROLL ── -->
@@ -336,7 +369,7 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
   <div class="pg on" id="pg-dash">
     <div class="hero">
       <div class="hero-lbl">📅 <span id="heroM"></span> — Overview</div>
-      <div class="hero-val" id="heroV">₹0</div>
+      <div class="hero-val amt" id="heroV">₹0</div>
       <div class="hero-sub" id="heroS"></div>
       <div class="hero-row">
         <div class="hm"><div class="hm-v g" id="hm-p">0</div><div class="hm-l">Paid</div></div>
@@ -346,9 +379,9 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
     </div>
     <div id="dash-alert-banner"></div>
     <div class="sgrid">
-      <div class="stt g"><div class="stt-l">Collected</div><div class="stt-v g" id="dc">₹0</div><div class="stt-s">this month</div></div>
-      <div class="stt r"><div class="stt-l">Pending Fees</div><div class="stt-v r" id="dp">₹0</div><div class="stt-s">this month</div></div>
-      <div class="stt y"><div class="stt-l">Total Outstanding</div><div class="stt-v y" id="dod">₹0</div><div class="stt-s">all dues</div></div>
+      <div class="stt g"><div class="stt-l">Collected</div><div class="stt-v g amt" id="dc">₹0</div><div class="stt-s">this month</div></div>
+      <div class="stt r"><div class="stt-l">Pending Fees</div><div class="stt-v r amt" id="dp">₹0</div><div class="stt-s">this month</div></div>
+      <div class="stt y"><div class="stt-l">Total Outstanding</div><div class="stt-v y amt" id="dod">₹0</div><div class="stt-s">all dues</div></div>
       <div class="stt p"><div class="stt-l">Partial Pays</div><div class="stt-v p" id="dpt">0</div><div class="stt-s">this month</div></div>
     </div>
     <div class="s-hdr">
@@ -385,7 +418,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
     <div class="fw">
       <div class="fttl" id="fTtl">Add Student</div>
       <div class="fsub-txt" id="fSub">Fill in student details below</div>
-      <!-- Photo -->
       <div class="img-upload-wrap">
         <div class="img-preview" id="imgPreview" onclick="document.getElementById('imgFile').click()">📷</div>
         <div class="img-btns">
@@ -493,6 +525,21 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
       </div>
     </div>
 
+    <!-- PRIVACY SETTING -->
+    <div class="set-section">
+      <div class="set-sec-hdr">🔒 Privacy</div>
+      <div class="set-row">
+        <div>
+          <div class="set-lbl">Privacy Mode</div>
+          <div class="set-sub">Blur all fee amounts — tap 👁️ in header to toggle</div>
+        </div>
+        <label class="tog-sw">
+          <input type="checkbox" id="s-privacy" onchange="togglePrivacyFromSettings()">
+          <span class="tog-sl"></span>
+        </label>
+      </div>
+    </div>
+
     <!-- 3. WHATSAPP TEMPLATES -->
     <div class="set-section">
       <div class="set-sec-hdr">💬 WhatsApp Message Templates</div>
@@ -502,8 +549,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <span style="font-family:var(--mono);color:var(--acc)">{student} {parent} {fee} {month} {year} {balance} {institute} {teacher} {dueday} {currency} {mobile}</span>
       </div>
       <div style="padding:8px 16px;border-bottom:1px solid var(--bdr);display:flex;flex-wrap:wrap;gap:5px;" id="varButtons"></div>
-
-      <!-- Fee Reminder -->
       <div class="set-row col">
         <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
           <div><div class="set-lbl">📢 Fee Reminder</div><div class="set-sub">Sent when you tap WhatsApp on an unpaid student</div></div>
@@ -512,8 +557,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <textarea class="set-ta" id="s-tpl-reminder" oninput="updateTplPreview('reminder');settingsChanged()" onfocus="setActiveTa(this)"></textarea>
         <div class="tpl-preview" id="prev-reminder"></div>
       </div>
-
-      <!-- Payment Confirmation -->
       <div class="set-row col">
         <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
           <div><div class="set-lbl">✅ Payment Confirmation</div><div class="set-sub">Sent after recording a full payment</div></div>
@@ -522,8 +565,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <textarea class="set-ta" id="s-tpl-confirm" oninput="updateTplPreview('confirm');settingsChanged()" onfocus="setActiveTa(this)"></textarea>
         <div class="tpl-preview" id="prev-confirm"></div>
       </div>
-
-      <!-- Overdue Warning -->
       <div class="set-row col">
         <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
           <div><div class="set-lbl">🚨 Overdue Warning</div><div class="set-sub">Sent from Alerts page for overdue students</div></div>
@@ -532,8 +573,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <textarea class="set-ta" id="s-tpl-overdue" oninput="updateTplPreview('overdue');settingsChanged()" onfocus="setActiveTa(this)"></textarea>
         <div class="tpl-preview" id="prev-overdue"></div>
       </div>
-
-      <!-- Partial Reminder -->
       <div class="set-row col">
         <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
           <div><div class="set-lbl">⚡ Partial Payment Reminder</div><div class="set-sub">Sent when balance is remaining this month</div></div>
@@ -582,7 +621,7 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
     <!-- 6. APP INFO -->
     <div class="set-section">
       <div class="set-sec-hdr">ℹ️ App Info</div>
-      <div class="set-row"><span class="set-lbl">Version</span><span class="set-val">TuitionPro v2.0</span></div>
+      <div class="set-row"><span class="set-lbl">Version</span><span class="set-val">TuitionZen v2.1</span></div>
       <div class="set-row"><span class="set-lbl">Students</span><span class="set-val" id="si-stus">0</span></div>
       <div class="set-row"><span class="set-lbl">Payment Records</span><span class="set-val" id="si-pays">0</span></div>
       <div class="set-row"><span class="set-lbl">Data stored</span><span class="set-val">On this device only</span></div>
@@ -613,20 +652,14 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
   <div class="modal">
     <div class="modal-drag"></div>
     <div class="modal-ttl" id="payModalTitle">Record Payment <button class="mcls" onclick="closeOv('payOv')">✕ close</button></div>
-
-    <!-- Student summary bar -->
     <div id="payStudentBar" style="background:var(--surf2);border:1px solid var(--bdr);border-radius:10px;padding:10px 12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
       <div id="payStudentName" style="font-size:13px;font-weight:800"></div>
       <div id="payStudentDue" style="font-size:12px;font-family:var(--mono);font-weight:700;color:var(--ylw)"></div>
     </div>
-
-    <!-- MODE TOGGLE: Single Month vs Multiple Months -->
     <div style="display:flex;gap:8px;margin-bottom:14px;">
       <div class="tog on" id="pmodeTab-single" onclick="setPayTab('single')" style="flex:1;text-align:center;padding:9px">Single Month</div>
       <div class="tog" id="pmodeTab-multi" onclick="setPayTab('multi')" style="flex:1;text-align:center;padding:9px">Multiple Months</div>
     </div>
-
-    <!-- SINGLE MONTH -->
     <div id="payTabSingle">
       <div class="fg"><label class="fl">Month</label>
         <select class="fs" id="pm">
@@ -643,8 +676,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <input class="fi" id="pamt" type="number" inputmode="numeric" placeholder="0" oninput="chkPartial()"/>
       </div>
     </div>
-
-    <!-- MULTIPLE MONTHS -->
     <div id="payTabMulti" style="display:none">
       <div style="font-size:11px;color:var(--txt3);margin-bottom:10px;font-weight:600">Tap months to select. Fee auto-calculated. You can edit the amount.</div>
       <div id="multiMonthGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;"></div>
@@ -652,7 +683,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <div style="font-size:12px;color:var(--txt2);font-weight:700">Selected: <span id="multiSelCount" style="color:var(--acc)">0</span> months</div>
         <div style="font-size:14px;font-weight:800;font-family:var(--mono);color:var(--ylw)" id="multiAutoAmt">₹0</div>
       </div>
-      <!-- Amount mode toggle -->
       <div style="display:flex;gap:8px;margin-bottom:10px;">
         <div class="tog on" id="amtTab-auto" onclick="setAmtTab('auto')" style="flex:1;text-align:center;padding:8px;font-size:11px">Auto-Calculate</div>
         <div class="tog" id="amtTab-manual" onclick="setAmtTab('manual')" style="flex:1;text-align:center;padding:8px;font-size:11px">Enter Manually</div>
@@ -661,8 +691,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
         <div class="fg"><label class="fl">Custom Amount (₹)</label><input class="fi" id="pamtMulti" type="number" inputmode="numeric" placeholder="0"/></div>
       </div>
     </div>
-
-    <!-- COMMON FIELDS -->
     <div class="fg"><label class="fl">Payment Mode</label>
       <select class="fs" id="pmode"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option><option>Online</option></select>
     </div>
@@ -698,7 +726,6 @@ body::before{content:'';position:fixed;inset:0;opacity:.035;pointer-events:none;
   </div>
 </div>
 
-<!-- FAB & TOAST — outside #app, fixed to viewport -->
 <button id="fab" onclick="openAdd()">+</button>
 <div id="toast"></div>
 
@@ -714,6 +741,57 @@ const DB={
   sp(d){localStorage.setItem('tp_payments',JSON.stringify(d));},
   nid(a){return a.length?Math.max(...a.map(x=>x.id))+1:1;}
 };
+
+// ══════════════════════════════════════════════════
+//  PRIVACY MODE
+// ══════════════════════════════════════════════════
+let privacyOn = localStorage.getItem('tp_privacy') === '1';
+
+function applyPrivacy(){
+  const btn = document.getElementById('privacyBtn');
+  const icon = document.getElementById('privacyIcon');
+  const settingChk = document.getElementById('s-privacy');
+  if(privacyOn){
+    btn.classList.add('locked');
+    icon.textContent = '🔒';
+    if(settingChk) settingChk.checked = true;
+  } else {
+    btn.classList.remove('locked');
+    icon.textContent = '👁️';
+    if(settingChk) settingChk.checked = false;
+  }
+  localStorage.setItem('tp_privacy', privacyOn ? '1' : '0');
+  document.getElementById('privacyBanner').style.display = privacyOn ? 'flex' : 'none';
+  maskAmounts();
+}
+
+function maskAmounts(){
+  document.querySelectorAll('.amt').forEach(el => {
+    if(privacyOn){
+      if(!el.dataset.real) el.dataset.real = el.textContent;
+      el.textContent = '****';
+      el.classList.add('masked');
+    } else {
+      if(el.dataset.real !== undefined){
+        el.textContent = el.dataset.real;
+        delete el.dataset.real;
+      }
+      el.classList.remove('masked');
+    }
+  });
+}
+
+function togglePrivacy(){
+  privacyOn = !privacyOn;
+  applyPrivacy();
+  toast(privacyOn ? '🔒 Privacy mode on — amounts hidden' : '👁️ Privacy mode off — amounts visible', privacyOn ? '' : 'ok');
+}
+
+function togglePrivacyFromSettings(){
+  privacyOn = document.getElementById('s-privacy').checked;
+  applyPrivacy();
+  toast(privacyOn ? '🔒 Privacy mode on' : '👁️ Privacy mode off', privacyOn ? '' : 'ok');
+}
 
 // ══════════════════════════════════════════════════
 //  SETTINGS — defaults
@@ -779,9 +857,8 @@ const MO=['January','February','March','April','May','June','July','August','Sep
 let curPg='dash', prevPg='dash', editId=null, detId=null, payId=null;
 let chipFilter='all', repTab='month', dueType='amt', pickedMos=[];
 let pendingImgData=null;
-let activeTa=null; // currently focused textarea in settings
+let activeTa=null;
 let settingsDirty=false;
-// WA pending send (used by preview modal)
 let waPendingUrl=null;
 
 // ══════════════════════════════════════════════════
@@ -791,12 +868,17 @@ function N(n){
   const cfg=getSettings();
   return(cfg.curr||'₹')+Number(n||0).toLocaleString('en-IN');
 }
-function NR(n){return Number(n||0).toLocaleString('en-IN');} // raw, no currency
+function NR(n){return Number(n||0).toLocaleString('en-IN');}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
 function toast(m,t=''){
   const el=document.getElementById('toast');
   el.textContent=m; el.className='on'+(t?' '+t:'');
   clearTimeout(el._t); el._t=setTimeout(()=>el.className='',2800);
+}
+
+// Wrap an amount string in a .amt span so privacy blur applies
+function amtSpan(str, extraClass=''){
+  return `<span class="amt${extraClass?' '+extraClass:''}">${esc(String(str))}</span>`;
 }
 
 // ══════════════════════════════════════════════════
@@ -827,7 +909,6 @@ function fillTemplate(tpl, s, pays, extraVars={}){
   return msg;
 }
 
-// Choose correct template based on student status
 function getWATemplate(s, pays){
   const cfg=getSettings();
   const st=mStatus(s, pays.filter(p=>p.student_id===s.id));
@@ -851,23 +932,15 @@ function sendWA(sid, tplKey=null){
   let num=String(s.mobile_number).replace(/\D/g,'');
   if(!num.startsWith('91')) num='91'+num;
   const url=`https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
-  // Show preview first
   document.getElementById('waPreviewText').textContent=msg;
   document.getElementById('waConfirmBtn').onclick=()=>{closeOv('waOv');window.open(url,'_blank');toast('Opening WhatsApp… 📱','wa');};
   document.getElementById('waOv').classList.add('on');
 }
 
-function sendWADirect(url){window.open(url,'_blank'); toast('Opening WhatsApp 📱','wa');}
-
 // ══════════════════════════════════════════════════
 //  FINANCE LOGIC
 // ══════════════════════════════════════════════════
-// ── CORE FINANCE ENGINE ────────────────────────────────────────────────────
-// Builds a per-month status map by distributing ALL payments chronologically.
-// Payments flow from the earliest unpaid month forward — so a lump-sum payment
-// correctly fills multiple months rather than leaving old months as ❌.
 function buildMonthMap(s, pays){
-  // Collect all months the student owes, oldest first
   const months=[];
   if(s.joining_date){
     const j=new Date(s.joining_date);
@@ -878,26 +951,15 @@ function buildMonthMap(s, pays){
     }
   }
   if(!months.length) return {};
-
-  // Pool all payments for this student (excluding is_prev_due adjustments)
   let pool = pays
     .filter(p=>p.student_id===s.id && !p.is_prev_due)
     .reduce((a,p)=>a+p.amount, 0);
-
-  // Also start pool credit: prev_due already owed before joining,
-  // so subtract it from pool (it's pre-paid debt, not a positive credit)
-  // Actually prev_due is additional debt, not credit — handled in totalDue.
-  // Pool is only what has actually been collected.
-
-  // Distribute pool across months oldest → newest
   for(const mo of months){
     if(pool<=0) break;
     const apply=Math.min(pool, mo.owed);
     mo.paid=apply;
     pool-=apply;
   }
-
-  // Build lookup {y_m: {owed, paid, status}}
   const map={};
   for(const mo of months){
     const key=`${mo.y}_${mo.m}`;
@@ -909,7 +971,6 @@ function buildMonthMap(s, pays){
   return map;
 }
 
-// Total money still owed across ALL months + prev_due - all payments made
 function totalDue(s, pays){
   let owed=parseFloat(s.prev_due)||0;
   if(s.joining_date){
@@ -924,9 +985,7 @@ function totalDue(s, pays){
   return Math.max(0, owed-totalPaid);
 }
 
-// Current month status using the distributed map
 function mStatus(s, pays){
-  // If student has no dues at all, current month is also considered clear
   const due=totalDue(s,pays);
   if(due===0) return{status:'paid',paid:s.monthly_fee,rem:0};
   const map=buildMonthMap(s,pays);
@@ -936,20 +995,17 @@ function mStatus(s, pays){
   return{status:mo.status, paid:mo.paid, rem:mo.owed-mo.paid};
 }
 
-// Count past months (before current) that are still unpaid/partial
-// ONLY counts if student actually has an outstanding balance
 function overdueMonths(s, pays){
   const due=totalDue(s,pays);
-  if(due===0) return 0; // fully clear — no overdue shown
+  if(due===0) return 0;
   const map=buildMonthMap(s,pays);
   let cnt=0;
-  // check all months before current
   if(s.joining_date){
     const j=new Date(s.joining_date);
     const jY=j.getFullYear(), jM=j.getMonth()+1;
     for(let y=jY;y<=curY;y++){
       const ms=(y===jY)?jM:1;
-      const me=(y===curY)?curM-1:12; // exclude current month
+      const me=(y===curY)?curM-1:12;
       for(let m=ms;m<=me;m++){
         const mo=map[`${y}_${m}`];
         if(mo && mo.status!=='paid') cnt++;
@@ -1046,7 +1102,7 @@ function renderDash(){
   const expected=stus.reduce((a,s)=>a+s.monthly_fee,0);
   const curr=cfg.curr||'₹';
   document.getElementById('heroV').textContent=curr+NR(collected);
-  document.getElementById('heroS').textContent='Collected of '+curr+NR(expected)+' expected';
+  document.getElementById('heroS').innerHTML=`Collected of <span class="amt">${curr}${NR(expected)}</span> expected`;
   document.getElementById('hm-p').textContent=paidC;
   document.getElementById('hm-u').textContent=unpaidC+partC;
   document.getElementById('hm-t').textContent=stus.length;
@@ -1061,7 +1117,6 @@ function renderDash(){
     document.getElementById('dashTable').innerHTML='<div class="empty"><div class="empty-ic">🎓</div>No students yet.<br>Tap + to add one.</div>';
     updateBellDot(); return;
   }
-  // Group: pending (any due) vs all-clear (fully paid, no balance)
   const stusPending=stus.filter(s=>totalDue(s,pays)>0||mStatus(s,pays).status!=='paid');
   const stusAllClear=stus.filter(s=>totalDue(s,pays)===0&&mStatus(s,pays).status==='paid');
   let html='';
@@ -1075,6 +1130,7 @@ function renderDash(){
   }
   document.getElementById('dashTable').innerHTML=html;
   updateBellDot();
+  maskAmounts();
 }
 
 // ══════════════════════════════════════════════════
@@ -1090,26 +1146,24 @@ function stuRow(s, pays){
   const isPaid=st.status==='paid';
   const isPartial=st.status==='partial';
 
-  // Status badge text + class
   let bdgClass, bdgText;
   if(isFullyClear){
     bdgClass='paid'; bdgText='✓ ALL CLEAR';
   } else if(isPaid){
     bdgClass='paid'; bdgText='✓ PAID';
   } else if(isPartial){
-    bdgClass='partial'; bdgText=`⚡ PARTIAL — ${curr}${NR(st.paid)} paid`;
+    bdgClass='partial'; bdgText=`⚡ PARTIAL — <span class="amt">${curr}${NR(st.paid)}</span> paid`;
   } else {
     bdgClass='unpaid'; bdgText='✗ UNPAID';
   }
 
-  // Due line: only show when there's an actual balance
   let dueLine='';
   if(isFullyClear){
     dueLine=`<div style="font-size:11px;color:var(--grn);margin-top:5px;font-weight:700">✅ No dues — all fees clear</div>`;
   } else if(isPartial){
-    dueLine=`<div class="due-line">Balance this month: ${curr}${NR(st.rem)}${due>s.monthly_fee?` · Total outstanding: ${curr}${NR(due)}`:''}</div>`;
+    dueLine=`<div class="due-line">Balance this month: <span class="amt">${curr}${NR(st.rem)}</span>${due>s.monthly_fee?` · Total outstanding: <span class="amt">${curr}${NR(due)}</span>`:''}</div>`;
   } else if(!isPaid){
-    dueLine=`<div class="due-line">Due this month: ${curr}${NR(st.rem)}${due>s.monthly_fee?` · Total outstanding: ${curr}${NR(due)}`:''}</div>`;
+    dueLine=`<div class="due-line">Due this month: <span class="amt">${curr}${NR(st.rem)}</span>${due>s.monthly_fee?` · Total outstanding: <span class="amt">${curr}${NR(due)}</span>`:''}</div>`;
   }
 
   return`<div class="dt-row ${isFullyClear?'paid-row':st.status+'-row'}">
@@ -1118,7 +1172,7 @@ function stuRow(s, pays){
         ${avatarHTML(s,38)}
         <div class="dt-name" onclick="goDetail(${s.id})">${esc(s.student_name)}</div>
       </div>
-      <div class="dt-fee">${curr}${NR(s.monthly_fee)}/mo</div>
+      <div class="dt-fee"><span class="amt">${curr}${NR(s.monthly_fee)}</span>/mo</div>
     </div>
     <div class="dt-mid">
       ${s.parent_name?`<span class="tag">👤 ${esc(s.parent_name)}</span>`:''}
@@ -1163,6 +1217,7 @@ function renderStu(){
   });
   document.getElementById('stuEmpty').style.display=list.length?'none':'block';
   document.getElementById('stuList').innerHTML=list.map(s=>stuRow(s,pays)).join('');
+  maskAmounts();
 }
 function setChip(f,el){chipFilter=f;document.querySelectorAll('.chip-f').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderStu();}
 
@@ -1180,7 +1235,6 @@ function renderDet(id){
   const odm=overdueMonths(s,pays);
   const curr=cfg.curr||'₹';
 
-  // Build month tracker using distributed payment map
   const monthMap=buildMonthMap(s,pays);
   const isFullyClear=(due===0);
   let cells='';
@@ -1194,13 +1248,12 @@ function renderDet(id){
     if(isFut){
       cls='fut';ico='·';
     } else if(!mo){
-      // Month before joining date — not applicable
       cls='fut';ico='·';
     } else if(isFullyClear || mo.status==='paid'){
       cls='paid';ico='✅';
-      amt=mo.paid>0?curr+NR(mo.paid):'';
+      amt=mo.paid>0?`<span class="amt">${curr}${NR(mo.paid)}</span>`:'';
     } else if(mo.status==='partial'){
-      cls='part';ico='⚡';amt=curr+NR(mo.paid);
+      cls='part';ico='⚡';amt=`<span class="amt">${curr}${NR(mo.paid)}</span>`;
     } else {
       cls='unpd';ico='❌';
     }
@@ -1215,8 +1268,8 @@ function renderDet(id){
         <div>
           <div class="det-name">${esc(s.student_name)}</div>
           <div class="det-row">
-            <span style="font-size:13px;color:var(--txt2);font-family:var(--mono);font-weight:600">${curr}${NR(s.monthly_fee)}/mo</span>
-            <span class="bdg ${st.status}">${st.status==='partial'?`⚡ PARTIAL — ${curr}${NR(st.paid)} paid`:st.status==='paid'?'✓ PAID':'✗ UNPAID'}</span>
+            <span style="font-size:13px;color:var(--txt2);font-family:var(--mono);font-weight:600"><span class="amt">${curr}${NR(s.monthly_fee)}</span>/mo</span>
+            <span class="bdg ${st.status}">${st.status==='partial'?`⚡ PARTIAL — <span class="amt">${curr}${NR(st.paid)}</span> paid`:st.status==='paid'?'✓ PAID':'✗ UNPAID'}</span>
             ${odm>0?`<span class="bdg overdue">🔴 ${odm}mo overdue</span>`:''}
           </div>
         </div>
@@ -1229,7 +1282,7 @@ function renderDet(id){
       </div>
     </div>
 
-    ${due>0?`<div class="total-due-box"><div><div class="tdb-l">⚠ Total Outstanding Balance</div><div style="font-size:11px;color:var(--txt3);margin-top:2px">Includes all pending dues</div></div><div class="tdb-v">${curr}${NR(due)}</div></div>`:''}
+    ${due>0?`<div class="total-due-box"><div><div class="tdb-l">⚠ Total Outstanding Balance</div><div style="font-size:11px;color:var(--txt3);margin-top:2px">Includes all pending dues</div></div><div class="tdb-v amt">${curr}${NR(due)}</div></div>`:''}
 
     <div class="act-row">
       <button class="abtn pri" onclick="openPay(${s.id})"><span>💰</span>Payment</button>
@@ -1240,13 +1293,13 @@ function renderDet(id){
     </div>
 
     <div class="due-box">
-      <div class="dbr"><span class="dbl">Monthly Fee</span><span class="dbv mono">${curr}${NR(s.monthly_fee)}</span></div>
-      <div class="dbr"><span class="dbl">Paid This Month</span><span class="dbv mono g">${curr}${NR(st.paid)}</span></div>
-      ${st.status==='partial'?`<div class="dbr"><span class="dbl">Balance This Month</span><span class="dbv mono y">${curr}${NR(st.rem)}</span></div>`:''}
-      ${st.status==='unpaid'?`<div class="dbr"><span class="dbl">Due This Month</span><span class="dbv mono r">${curr}${NR(s.monthly_fee)}</span></div>`:''}
-      <div class="dbr"><span class="dbl">Previous Outstanding</span><span class="dbv mono ${(s.prev_due||0)>0?'y':'g'}">${(s.prev_due||0)>0?curr+NR(s.prev_due):'None'}</span></div>
-      <div class="dbr"><span class="dbl">Total Collected</span><span class="dbv mono g">${curr}${NR(totalP)}</span></div>
-      <div class="dbr"><span class="dbl">Total Outstanding</span><span class="dbv mono ${due>0?'r':'g'}">${due>0?curr+NR(due):'Clear ✓'}</span></div>
+      <div class="dbr"><span class="dbl">Monthly Fee</span><span class="dbv mono amt">${curr}${NR(s.monthly_fee)}</span></div>
+      <div class="dbr"><span class="dbl">Paid This Month</span><span class="dbv mono g amt">${curr}${NR(st.paid)}</span></div>
+      ${st.status==='partial'?`<div class="dbr"><span class="dbl">Balance This Month</span><span class="dbv mono y amt">${curr}${NR(st.rem)}</span></div>`:''}
+      ${st.status==='unpaid'?`<div class="dbr"><span class="dbl">Due This Month</span><span class="dbv mono r amt">${curr}${NR(s.monthly_fee)}</span></div>`:''}
+      <div class="dbr"><span class="dbl">Previous Outstanding</span><span class="dbv mono ${(s.prev_due||0)>0?'y':'g'} amt">${(s.prev_due||0)>0?curr+NR(s.prev_due):'None'}</span></div>
+      <div class="dbr"><span class="dbl">Total Collected</span><span class="dbv mono g amt">${curr}${NR(totalP)}</span></div>
+      <div class="dbr"><span class="dbl">Total Outstanding</span><span class="dbv mono ${due>0?'r':'g'} amt">${due>0?curr+NR(due):'Clear ✓'}</span></div>
     </div>
 
     <div class="inf-sec">
@@ -1274,12 +1327,13 @@ function renderDet(id){
               <span class="pmo-l">${esc(p.mode||'Cash')}${p.note?' · '+esc(p.note):''}</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px">
-              <span class="pa-l ${p.amount<s.monthly_fee?'pt':''}">+${curr}${NR(p.amount)}</span>
+              <span class="pa-l ${p.amount<s.monthly_fee?'pt':''} amt">+${curr}${NR(p.amount)}</span>
               <button class="pdel" onclick="confirmDelPay(${p.id},${id})">🗑</button>
             </div>
           </div>`).join('')
         :'<div style="color:var(--txt3);font-size:13px;padding:8px 0">No payments recorded yet.</div>'}
     </div>`;
+  maskAmounts();
 }
 
 // ══════════════════════════════════════════════════
@@ -1298,35 +1352,35 @@ function renderRep(){
     const totalCollected=pays.filter(p=>p.month===curM&&p.year===curY&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
     html=`
       <div class="rcard" style="margin-top:14px"><div class="rttl">📊 ${MO[curM-1]} ${curY} Summary</div>
-        <div class="rrow"><span class="rn">Total Collected</span><span class="rv g">${curr}${NR(totalCollected)}</span></div>
+        <div class="rrow"><span class="rn">Total Collected</span><span class="rv g amt">${curr}${NR(totalCollected)}</span></div>
         <div class="rrow"><span class="rn">Fully Paid</span><span class="rv g">${paid.length} students</span></div>
         <div class="rrow"><span class="rn">Partial</span><span class="rv y">${partial.length} students</span></div>
         <div class="rrow"><span class="rn">Unpaid</span><span class="rv r">${unpaid.length} students</span></div>
       </div>
       <div class="rcard"><div class="rttl">✅ Fully Paid (${paid.length})</div>
         ${paid.length?paid.map(s=>{const mp=pays.filter(p=>p.student_id===s.id&&p.month===curM&&p.year===curY&&!p.is_prev_due);const tot=mp.reduce((a,p)=>a+p.amount,0);
-          return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${esc(s.parent_name||'')} · ${esc(s.class_batch||'')}</div></div><span class="rv g">${curr}${NR(tot)}</span></div>`;}).join('')
+          return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${esc(s.parent_name||'')} · ${esc(s.class_batch||'')}</div></div><span class="rv g amt">${curr}${NR(tot)}</span></div>`;}).join('')
           :'<div style="color:var(--txt3);font-size:13px;padding:6px 0">None yet this month</div>'}
       </div>
       <div class="rcard"><div class="rttl">⚡ Partial (${partial.length})</div>
         ${partial.length?partial.map(s=>{const st=mStatus(s,pays);
-          return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">Paid ${curr}${NR(st.paid)} · Remaining ${curr}${NR(st.rem)}</div></div><span class="rv y">${curr}${NR(st.rem)} left</span></div>`;}).join('')
+          return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">Paid <span class="amt">${curr}${NR(st.paid)}</span> · Remaining <span class="amt">${curr}${NR(st.rem)}</span></div></div><span class="rv y amt">${curr}${NR(st.rem)} left</span></div>`;}).join('')
           :'<div style="color:var(--txt3);font-size:13px;padding:6px 0">None</div>'}
       </div>
       <div class="rcard"><div class="rttl">❌ Unpaid (${unpaid.length})</div>
-        ${unpaid.length?unpaid.map(s=>`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${esc(s.parent_name||'')} · ${esc(s.mobile_number||'')}</div></div><span class="rv r">${curr}${NR(s.monthly_fee)}</span></div>`).join('')
+        ${unpaid.length?unpaid.map(s=>`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${esc(s.parent_name||'')} · ${esc(s.mobile_number||'')}</div></div><span class="rv r amt">${curr}${NR(s.monthly_fee)}</span></div>`).join('')
           :'<div style="color:var(--grn);font-size:13px;padding:6px 0">🎉 All paid this month!</div>'}
       </div>`;
   } else if(repTab==='dues'){
     const wd=stus.map(s=>({...s,due:totalDue(s,pays),odm:overdueMonths(s,pays)})).filter(s=>s.due>0).sort((a,b)=>b.due-a.due);
     const totalOD=wd.reduce((a,s)=>a+s.due,0);
     html=`<div class="rcard" style="margin-top:14px">
-      <div class="rttl">Total Outstanding: ${curr}${NR(totalOD)}</div>
+      <div class="rttl">Total Outstanding: <span class="amt">${curr}${NR(totalOD)}</span></div>
       ${wd.length?wd.map(s=>`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer">
         <div><div class="rn">${esc(s.student_name)}</div>
-        <div class="rs">${s.odm} month${s.odm!==1?'s':''} behind · ${curr}${NR(s.monthly_fee)}/mo</div></div>
+        <div class="rs">${s.odm} month${s.odm!==1?'s':''} behind · <span class="amt">${curr}${NR(s.monthly_fee)}</span>/mo</div></div>
         <div style="text-align:right">
-          <div class="rv r">${curr}${NR(s.due)}</div>
+          <div class="rv r amt">${curr}${NR(s.due)}</div>
           <button class="dt-btn wa-btn" style="font-size:10px;padding:4px 8px;margin-top:4px" onclick="event.stopPropagation();sendWA(${s.id},'overdue')">📱 Remind</button>
         </div>
       </div>`).join('')
@@ -1334,15 +1388,16 @@ function renderRep(){
     </div>`;
   } else {
     const totalAllTime=pays.filter(p=>!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
-    html=`<div class="rcard" style="margin-top:14px"><div class="rttl">All-Time: ${curr}${NR(totalAllTime)} collected</div>
+    html=`<div class="rcard" style="margin-top:14px"><div class="rttl">All-Time: <span class="amt">${curr}${NR(totalAllTime)}</span> collected</div>
       ${stus.length?stus.map(s=>{
         const t=pays.filter(p=>p.student_id===s.id&&!p.is_prev_due).reduce((a,p)=>a+p.amount,0);
         const full=pays.filter(p=>p.student_id===s.id&&!p.is_prev_due&&p.amount>=s.monthly_fee).length;
-        return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${full} full months paid</div></div><span class="rv g">${curr}${NR(t)}</span></div>`;}).join('')
+        return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer"><div><div class="rn">${esc(s.student_name)}</div><div class="rs">${full} full months paid</div></div><span class="rv g amt">${curr}${NR(t)}</span></div>`;}).join('')
       :'<div style="color:var(--txt3);font-size:13px;padding:6px 0">No students yet.</div>'}
     </div>`;
   }
   document.getElementById('repContent').innerHTML=html;
+  maskAmounts();
 }
 
 // ══════════════════════════════════════════════════
@@ -1366,7 +1421,7 @@ function renderAlerts(){
           <div class="rs">Parent: ${esc(s.parent_name||'—')} · 📞 ${esc(s.mobile_number||'—')}</div>
           <div class="rs">${s.odm} month${s.odm!==1?'s':''} behind</div></div>
           <div style="text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-            <div class="rv r">${curr}${NR(s.due)}</div>
+            <div class="rv r amt">${curr}${NR(s.due)}</div>
             <button class="dt-btn wa-btn" style="font-size:10px;padding:5px 9px" onclick="event.stopPropagation();sendWA(${s.id},'overdue')">📱 Overdue</button>
             <button class="dt-btn" style="font-size:10px;padding:5px 9px;border-color:var(--acc)33;color:var(--acc)" onclick="event.stopPropagation();sendWA(${s.id},'reminder')">📢 Reminder</button>
           </div>
@@ -1376,15 +1431,16 @@ function renderAlerts(){
       <div class="rcard" style="border-color:var(--ylw)55;margin-top:14px">
         <div class="rttl" style="color:var(--ylw)">⚡ Partial This Month (${partial.length})</div>
         ${partial.map(s=>{const st=mStatus(s,pays);return`<div class="rrow" onclick="goDetail(${s.id})" style="cursor:pointer">
-          <div><div class="rn">${esc(s.student_name)}</div><div class="rs">Paid ${curr}${NR(st.paid)} of ${curr}${NR(s.monthly_fee)}</div></div>
+          <div><div class="rn">${esc(s.student_name)}</div><div class="rs">Paid <span class="amt">${curr}${NR(st.paid)}</span> of <span class="amt">${curr}${NR(s.monthly_fee)}</span></div></div>
           <div style="text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-            <span class="rv y">${curr}${NR(st.rem)} left</span>
+            <span class="rv y amt">${curr}${NR(st.rem)} left</span>
             <button class="dt-btn wa-btn" style="font-size:10px;padding:5px 9px" onclick="event.stopPropagation();sendWA(${s.id},'partial')">📱 Remind</button>
           </div>
         </div>`;}).join('')}
       </div>`;
   }
   document.getElementById('alertsContent').innerHTML=html;
+  maskAmounts();
 }
 
 // ══════════════════════════════════════════════════
@@ -1394,7 +1450,6 @@ const TPL_VARS=['{student}','{parent}','{fee}','{month}','{year}','{balance}','{
 
 function renderSettings(){
   const cfg=getSettings();
-  // Fill form fields
   document.getElementById('s-inst').value=cfg.institute||'';
   document.getElementById('s-teacher').value=cfg.teacher||'';
   document.getElementById('s-mynum').value=cfg.mynum||'';
@@ -1409,12 +1464,13 @@ function renderSettings(){
   document.getElementById('s-bell-overdue').checked=cfg.bell_overdue!==false;
   document.getElementById('s-bell-unpaid').checked=cfg.bell_unpaid!==false;
   document.getElementById('s-show-overdue').checked=cfg.show_overdue!==false;
+  // Privacy
+  document.getElementById('s-privacy').checked=privacyOn;
   // Stats
   document.getElementById('si-stus').textContent=DB.gs().filter(s=>s.active).length;
   document.getElementById('si-pays').textContent=DB.gp().length;
   // Variable buttons
   document.getElementById('varButtons').innerHTML=TPL_VARS.map(v=>`<span class="tpl-var" onclick="insertVar('${v}')">${v}</span>`).join('');
-  // Previews
   ['reminder','confirm','overdue','partial'].forEach(k=>updateTplPreview(k));
   settingsDirty=false;
   updateSaveBtn();
@@ -1429,7 +1485,6 @@ function insertVar(v){
   activeTa.value=val.slice(0,s)+v+val.slice(e);
   activeTa.selectionStart=activeTa.selectionEnd=s+v.length;
   activeTa.focus();
-  // Determine which template it belongs to
   const id=activeTa.id.replace('s-tpl-','');
   updateTplPreview(id);
   settingsChanged();
@@ -1439,7 +1494,6 @@ function updateTplPreview(key){
   const ta=document.getElementById('s-tpl-'+key); if(!ta) return;
   const prev=document.getElementById('prev-'+key); if(!prev) return;
   const cfg=getSettings();
-  // Use first student as sample, or mock data
   const stus=DB.gs().filter(s=>s.active);
   const sample=stus[0]||{id:1,student_name:'Arjun Kumar',parent_name:'Rajesh Kumar',mobile_number:'9876543210',monthly_fee:1500,prev_due:0};
   const pays=DB.gp();
@@ -1458,11 +1512,7 @@ function updateTplPreview(key){
   prev.textContent=msg;
 }
 
-function settingsChanged(){
-  settingsDirty=true;
-  updateSaveBtn();
-}
-
+function settingsChanged(){settingsDirty=true;updateSaveBtn();}
 function updateSaveBtn(){
   const btn=document.getElementById('saveSetBtn');
   if(settingsDirty){btn.style.opacity='1';btn.style.cursor='pointer';btn.disabled=false;btn.textContent='Save Settings';}
@@ -1489,7 +1539,6 @@ function saveSettings(){
   saveSettingsObj(cfg);
   settingsDirty=false;
   updateSaveBtn();
-  // Update header
   document.getElementById('hdrInst').textContent=cfg.institute||'';
   updateBellDot();
   toast('Settings saved ✓','ok');
@@ -1663,10 +1712,9 @@ function doDelPay(pid,sid){DB.sp(DB.gp().filter(p=>p.id!==pid));closeOv('delOv')
 // ══════════════════════════════════════════════════
 //  PAYMENT MODAL
 // ══════════════════════════════════════════════════
-// ── PAY TAB TOGGLE ────────────────────────────────
-let payTabMode='single'; // 'single' or 'multi'
-let amtTabMode='auto';   // 'auto' or 'manual'
-let selectedMonths=[];   // [{m,y}] for multi-month
+let payTabMode='single';
+let amtTabMode='auto';
+let selectedMonths=[];
 
 function setPayTab(mode){
   payTabMode=mode;
@@ -1681,7 +1729,6 @@ function setAmtTab(mode){
   document.getElementById('amtTab-auto').classList.toggle('on',mode==='auto');
   document.getElementById('amtTab-manual').classList.toggle('on',mode==='manual');
   document.getElementById('amtManualWrap').style.display=mode==='manual'?'block':'none';
-  // When switching back to auto, recalculate
   if(mode==='auto'){
     const s=DB.gs().find(x=>x.id===payId);
     if(s) updateMultiAmt(s);
@@ -1692,7 +1739,6 @@ function buildMultiMonthGrid(s, pays){
   const cfg=getSettings();
   const curr=cfg.curr||'₹';
   const map=buildMonthMap(s,pays);
-  // Show last 24 months + current
   const cells=[];
   for(let i=23;i>=0;i--){
     const d=new Date(curY,curM-1-i,1);
@@ -1746,12 +1792,10 @@ function openPay(sid){
   selectedMonths=[];
   payTabMode='single'; amtTabMode='auto';
 
-  // Student summary bar
   document.getElementById('payStudentName').textContent=s.student_name;
   document.getElementById('payStudentDue').textContent=
     due===0?'✅ All Clear':curr+NR(due)+' outstanding';
 
-  // Single month defaults
   document.getElementById('pm').value=curM;
   document.getElementById('pyr').value=curY;
   document.getElementById('pamt').value=st.rem>0?st.rem:s.monthly_fee;
@@ -1759,7 +1803,6 @@ function openPay(sid){
   document.getElementById('pmode').value='Cash';
   document.getElementById('sendConfirmChk').checked=false;
 
-  // Partial hint
   const hint=document.getElementById('partHint');
   if(st.status==='partial'){
     hint.style.display='block';
@@ -1768,14 +1811,10 @@ function openPay(sid){
     hint.style.display='none';
   }
 
-  // Reset tabs
   setPayTab('single');
   setAmtTab('auto');
   document.getElementById('pamtMulti').value='';
-
-  // Build multi-month grid
   buildMultiMonthGrid(s,pays);
-
   document.getElementById('payOv').classList.add('on');
 }
 
@@ -1805,7 +1844,6 @@ function savePay(){
   const dateStr=now.toLocaleDateString('en-IN');
 
   if(payTabMode==='multi'){
-    // ── MULTI-MONTH PAYMENT ──
     if(!selectedMonths.length){toast('Select at least one month','er');return;}
     const rawAmt=parseFloat(
       amtTabMode==='manual'
@@ -1813,13 +1851,9 @@ function savePay(){
         :selectedMonths.length*s.monthly_fee
     );
     if(!rawAmt||rawAmt<=0){toast('Enter payment amount','er');return;}
-
-    // Distribute: per-month amount = rawAmt / selected months (or monthly_fee each)
     const perMo=amtTabMode==='auto'?s.monthly_fee:rawAmt/selectedMonths.length;
-    // Sort months chronologically
     const sorted=[...selectedMonths].sort((a,b)=>a.y!==b.y?a.y-b.y:a.m-b.m);
     let remaining=rawAmt;
-
     sorted.forEach(({m,y})=>{
       if(remaining<=0) return;
       const apply=Math.min(remaining, amtTabMode==='auto'?s.monthly_fee:perMo);
@@ -1831,10 +1865,8 @@ function savePay(){
     });
     DB.sp(pays);
     closeOv('payOv');
-    toast(`${sorted.length} month${sorted.length>1?'s':''} payment recorded ✓ (${(getSettings().curr||'₹')}${NR(rawAmt)})`,'ok');
-
+    toast(`${sorted.length} month${sorted.length>1?'s':''} payment recorded ✓`,'ok');
   } else {
-    // ── SINGLE MONTH PAYMENT ──
     const month=parseInt(document.getElementById('pm').value);
     const year=parseInt(document.getElementById('pyr').value);
     const amount=parseFloat(document.getElementById('pamt').value);
@@ -1849,13 +1881,11 @@ function savePay(){
     if(sendConf&&status==='Paid') setTimeout(()=>sendWA(payId,'confirm'),400);
   }
 
-  // Refresh
   if(document.getElementById('pg-det').classList.contains('on')) renderDet(payId);
   else if(document.getElementById('pg-dash').classList.contains('on')) renderDash();
   else renderStu();
   updateBellDot();
 }
-
 
 // ══════════════════════════════════════════════════
 //  DATA MANAGEMENT
@@ -1871,7 +1901,7 @@ function exportData(){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url; a.download=`TuitionPro_backup_${now.toISOString().split('T')[0]}.json`;
+  a.href=url; a.download=`TuitionZen_backup_${now.toISOString().split('T')[0]}.json`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
   toast('Backup exported ✓','ok');
@@ -1918,7 +1948,7 @@ function closeOv(id){document.getElementById(id).classList.remove('on');}
 });
 
 // ══════════════════════════════════════════════════
-//  DEMO DATA — only if NO students exist
+//  DEMO DATA
 // ══════════════════════════════════════════════════
 if(DB.gs().length===0){
   const jd=(mOff)=>{const d=new Date(curY,curM-1-mOff,1);return d.toISOString().split('T')[0];};
@@ -1932,7 +1962,6 @@ if(DB.gs().length===0){
     {id:1,student_id:1,month:curM,year:curY,status:'Paid',payment_date:now.toLocaleDateString('en-IN'),amount:1500,mode:'UPI',note:'',is_prev_due:false},
     {id:2,student_id:3,month:curM,year:curY,status:'Partial',payment_date:now.toLocaleDateString('en-IN'),amount:1000,mode:'Cash',note:'will pay rest soon',is_prev_due:false},
   ]);
-  // Default settings
   saveSettingsObj({...SET_DEFAULT,institute:'My Tuition Classes',teacher:'Teacher',dueday:'5'});
 }
 
@@ -1942,6 +1971,7 @@ if(DB.gs().length===0){
 const cfg0=getSettings();
 document.getElementById('hdrM').textContent=now.getDate()+' '+MO[curM-1].slice(0,3)+' '+curY;
 document.getElementById('hdrInst').textContent=cfg0.institute||'';
+applyPrivacy(); // apply saved privacy state on load
 renderDash();
 updateBellDot();
 </script>
